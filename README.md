@@ -110,10 +110,10 @@ The system comes with pre-configured default users for testing:
 
 ## Data Persistence
 
-The system uses file-based data persistence with the following files:
-- `data/users.txt` - User information
-- `data/internships.txt` - Internship opportunities
-- `data/applications.txt` - Application records
+The system uses file-based data persistence. The data folder contains sample CSV files for initial system setup:
+- `data/sample_student_list.csv` - Sample student data with StudentID, Name, Major, Year, and Email
+- `data/sample_staff_list.csv` - Sample career center staff data with StaffID, Name, Role, Department, and Email  
+- `data/sample_company_representative_list.csv` - Sample company representative data with CompanyRepID, Name, CompanyName, Department, Position, Email, and Status
 
 Data is automatically loaded on startup and saved on shutdown.
 
