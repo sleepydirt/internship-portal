@@ -172,7 +172,6 @@ src/
 │   ├── BaseMenu.java
 │   ├── CareerCenterStaffMenu.java
 │   ├── CompanyRepresentativeMenu.java
-│   ├── CompanyRepresentativeMenu2.java
 │   ├── MainMenu.java
 │   └── StudentMenu.java
 ├── control/
