@@ -1,12 +1,10 @@
 package src.control;
 
-import src.entity.*;
-import src.enums.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import src.entity.*;
+import src.enums.*;
 
 /**
  * Data Manager - Handles file I/O operations for data persistence
@@ -307,7 +305,7 @@ public class DataManager {
             
             InternshipOpportunity internship = new InternshipOpportunity(
                 internshipID, title, description, level, preferredMajor,
-                openingDate, closingDate, companyName, companyRepresentativeID, totalSlots);
+                openingDate, closingDate, companyName, companyRepresentativeID, totalSlots, filledSlots);
             
             internship.setStatus(status);
             internship.setVisible(visible);
