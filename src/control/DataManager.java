@@ -13,21 +13,35 @@ import src.enums.*;
  * @version 1.0
  */
 public class DataManager {
-    private SystemManager systemManager;
+    private final UserRepository userRepository;
+    private final InternshipRepository internshipRepository;
+    private final ApplicationRepository applicationRepository;
+    private final UserManager userManager;
+
     private static final String DATA_DIR = "data/";
     private static final String USERS_FILE = DATA_DIR + "users.txt";
     private static final String INTERNSHIPS_FILE = DATA_DIR + "internships.txt";
     private static final String APPLICATIONS_FILE = DATA_DIR + "applications.txt";
-    
+
     /**
      * Constructor for DataManager
-     * @param systemManager reference to system manager
+     * 
+     * @param userRepository        user repository
+     * @param internshipRepository  internship repository
+     * @param applicationRepository application repository
+     * @param userManager           user manager for default user creation
      */
-    public DataManager(SystemManager systemManager) {
-        this.systemManager = systemManager;
+    public DataManager(UserRepository userRepository,
+            InternshipRepository internshipRepository,
+            ApplicationRepository applicationRepository,
+            UserManager userManager) {
+        this.userRepository = userRepository;
+        this.internshipRepository = internshipRepository;
+        this.applicationRepository = applicationRepository;
+        this.userManager = userManager;
         createDataDirectory();
     }
-    
+
     /**
      * Create data directory if it doesn't exist
      */
@@ -37,7 +51,7 @@ public class DataManager {
             dataDir.mkdirs();
         }
     }
-    
+
     /**
      * Load all data from files
      */
@@ -45,15 +59,15 @@ public class DataManager {
         loadUsers();
         loadInternships();
         loadApplications();
-        
+
         // If no data exists, create default data
-        if (systemManager.getUsers().isEmpty()) {
+        if (userRepository.isEmpty()) {
             System.out.println("No existing data found. Creating default users...");
-            systemManager.getUserManager().createDefaultUsers();
+            userManager.createDefaultUsers();
             saveAllData(); // Save the default data
         }
     }
-    
+
     /**
      * Save all data to files
      */
@@ -62,7 +76,7 @@ public class DataManager {
         saveInternships();
         saveApplications();
     }
-    
+
     /**
      * Load users from file
      */
@@ -71,35 +85,35 @@ public class DataManager {
         if (!file.exists()) {
             return;
         }
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 User user = parseUserFromLine(line);
                 if (user != null) {
-                    systemManager.addUser(user);
+                    userRepository.add(user);
                 }
             }
-            System.out.println("Loaded " + systemManager.getUsers().size() + " users.");
+            System.out.println("Loaded " + userRepository.size() + " users.");
         } catch (IOException e) {
             System.err.println("Error loading users: " + e.getMessage());
         }
     }
-    
+
     /**
      * Save users to file
      */
     private void saveUsers() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(USERS_FILE))) {
-            for (User user : systemManager.getUsers().values()) {
+            for (User user : userRepository.getAll().values()) {
                 writer.println(formatUserToLine(user));
             }
-            System.out.println("Saved " + systemManager.getUsers().size() + " users.");
+            System.out.println("Saved " + userRepository.size() + " users.");
         } catch (IOException e) {
             System.err.println("Error saving users: " + e.getMessage());
         }
     }
-    
+
     /**
      * Load internships from file
      */
@@ -108,35 +122,35 @@ public class DataManager {
         if (!file.exists()) {
             return;
         }
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 InternshipOpportunity internship = parseInternshipFromLine(line);
                 if (internship != null) {
-                    systemManager.addInternship(internship);
+                    internshipRepository.add(internship);
                 }
             }
-            System.out.println("Loaded " + systemManager.getInternships().size() + " internships.");
+            System.out.println("Loaded " + internshipRepository.size() + " internships.");
         } catch (IOException e) {
             System.err.println("Error loading internships: " + e.getMessage());
         }
     }
-    
+
     /**
      * Save internships to file
      */
     private void saveInternships() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(INTERNSHIPS_FILE))) {
-            for (InternshipOpportunity internship : systemManager.getInternships().values()) {
+            for (InternshipOpportunity internship : internshipRepository.getAll().values()) {
                 writer.println(formatInternshipToLine(internship));
             }
-            System.out.println("Saved " + systemManager.getInternships().size() + " internships.");
+            System.out.println("Saved " + internshipRepository.size() + " internships.");
         } catch (IOException e) {
             System.err.println("Error saving internships: " + e.getMessage());
         }
     }
-    
+
     /**
      * Load applications from file
      */
@@ -145,35 +159,35 @@ public class DataManager {
         if (!file.exists()) {
             return;
         }
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 Application application = parseApplicationFromLine(line);
                 if (application != null) {
-                    systemManager.addApplication(application);
+                    applicationRepository.add(application);
                 }
             }
-            System.out.println("Loaded " + systemManager.getApplications().size() + " applications.");
+            System.out.println("Loaded " + applicationRepository.size() + " applications.");
         } catch (IOException e) {
             System.err.println("Error loading applications: " + e.getMessage());
         }
     }
-    
+
     /**
      * Save applications to file
      */
     private void saveApplications() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(APPLICATIONS_FILE))) {
-            for (Application application : systemManager.getApplications().values()) {
+            for (Application application : applicationRepository.getAll().values()) {
                 writer.println(formatApplicationToLine(application));
             }
-            System.out.println("Saved " + systemManager.getApplications().size() + " applications.");
+            System.out.println("Saved " + applicationRepository.size() + " applications.");
         } catch (IOException e) {
             System.err.println("Error saving applications: " + e.getMessage());
         }
     }
-    
+
     /**
      * Parse user from file line
      * Format: UserType|UserID|Name|Password|AdditionalFields...
@@ -181,20 +195,21 @@ public class DataManager {
     private User parseUserFromLine(String line) {
         try {
             String[] parts = line.split("\\|");
-            if (parts.length < 4) return null;
-            
+            if (parts.length < 4)
+                return null;
+
             String userType = parts[0];
             String userID = parts[1];
             String name = parts[2];
             String password = parts[3];
-            
+
             switch (userType) {
                 case "STUDENT":
                     if (parts.length >= 6) {
                         int yearOfStudy = Integer.parseInt(parts[4]);
                         Major major = Major.fromString(parts[5]);
                         Student student = new Student(userID, name, password, yearOfStudy, major);
-                        
+
                         // Load applied internships if present
                         if (parts.length > 6 && !parts[6].isEmpty()) {
                             String[] appliedInternships = parts[6].split(",");
@@ -202,27 +217,27 @@ public class DataManager {
                                 student.applyForInternship(internshipID.trim());
                             }
                         }
-                        
+
                         // Load accepted internship if present
                         if (parts.length > 7 && !parts[7].isEmpty()) {
                             student.acceptInternship(parts[7]);
                         }
-                        
+
                         return student;
                     }
                     break;
-                    
+
                 case "COMPANY_REPRESENTATIVE":
                     if (parts.length >= 8) {
                         String companyName = parts[4];
                         String department = parts[5];
                         String position = parts[6];
                         boolean isApproved = Boolean.parseBoolean(parts[7]);
-                        
+
                         CompanyRepresentative rep = new CompanyRepresentative(
-                            userID, name, password, companyName, department, position);
+                                userID, name, password, companyName, department, position);
                         rep.setApproved(isApproved);
-                        
+
                         // Load created internships if present
                         if (parts.length > 8 && !parts[8].isEmpty()) {
                             String[] createdInternships = parts[8].split(",");
@@ -230,11 +245,11 @@ public class DataManager {
                                 rep.addCreatedInternship(internshipID.trim());
                             }
                         }
-                        
+
                         return rep;
                     }
                     break;
-                    
+
                 case "CAREER_CENTER_STAFF":
                     if (parts.length >= 5) {
                         String staffDepartment = parts[4];
@@ -247,7 +262,7 @@ public class DataManager {
         }
         return null;
     }
-    
+
     /**
      * Format user to file line
      */
@@ -257,14 +272,14 @@ public class DataManager {
         sb.append(user.getUserID()).append("|");
         sb.append(user.getName()).append("|");
         sb.append(user.getPassword()).append("|");
-        
+
         if (user instanceof Student) {
             Student student = (Student) user;
             sb.append(student.getYearOfStudy()).append("|");
             sb.append(student.getMajor().name()).append("|");
             sb.append(String.join(",", student.getAppliedInternships())).append("|");
             sb.append(student.getAcceptedInternshipID() != null ? student.getAcceptedInternshipID() : "");
-            
+
         } else if (user instanceof CompanyRepresentative) {
             CompanyRepresentative rep = (CompanyRepresentative) user;
             sb.append(rep.getCompanyName()).append("|");
@@ -272,23 +287,24 @@ public class DataManager {
             sb.append(rep.getPosition()).append("|");
             sb.append(rep.isApproved()).append("|");
             sb.append(String.join(",", rep.getCreatedInternships()));
-            
+
         } else if (user instanceof CareerCenterStaff) {
             CareerCenterStaff staff = (CareerCenterStaff) user;
             sb.append(staff.getStaffDepartment());
         }
-        
+
         return sb.toString();
     }
-    
+
     /**
      * Parse internship from file line
      */
     private InternshipOpportunity parseInternshipFromLine(String line) {
         try {
             String[] parts = line.split("\\|");
-            if (parts.length < 12) return null;
-            
+            if (parts.length < 12)
+                return null;
+
             String internshipID = parts[0];
             String title = parts[1];
             String description = parts[2];
@@ -302,17 +318,18 @@ public class DataManager {
             int totalSlots = Integer.parseInt(parts[10]);
             int filledSlots = Integer.parseInt(parts[11]);
             boolean visible = parts.length > 12 ? Boolean.parseBoolean(parts[12]) : false;
-            
+
             InternshipOpportunity internship = new InternshipOpportunity(
-                internshipID, title, description, level, preferredMajor,
-                openingDate, closingDate, companyName, companyRepresentativeID, totalSlots, filledSlots);
-            
+                    internshipID, title, description, level, preferredMajor,
+                    openingDate, closingDate, companyName, companyRepresentativeID, totalSlots, filledSlots);
+
             internship.setStatus(status);
             internship.setVisible(visible);
-            
-            // Set filled slots (this would require additional method in InternshipOpportunity)
+
+            // Set filled slots (this would require additional method in
+            // InternshipOpportunity)
             // For now, we'll handle this through applications
-            
+
             // Load applicants if present
             if (parts.length > 13 && !parts[13].isEmpty()) {
                 String[] applicants = parts[13].split(",");
@@ -320,15 +337,15 @@ public class DataManager {
                     internship.addApplicant(applicantID.trim());
                 }
             }
-            
+
             return internship;
-            
+
         } catch (Exception e) {
             System.err.println("Error parsing internship line: " + line + " - " + e.getMessage());
         }
         return null;
     }
-    
+
     /**
      * Format internship to file line
      */
@@ -348,28 +365,29 @@ public class DataManager {
         sb.append(internship.getFilledSlots()).append("|");
         sb.append(internship.isVisible()).append("|");
         sb.append(String.join(",", internship.getApplicantIDs()));
-        
+
         return sb.toString();
     }
-    
+
     /**
      * Parse application from file line
      */
     private Application parseApplicationFromLine(String line) {
         try {
             String[] parts = line.split("\\|");
-            if (parts.length < 6) return null;
-            
+            if (parts.length < 6)
+                return null;
+
             String applicationID = parts[0];
             String studentID = parts[1];
             String internshipID = parts[2];
             ApplicationStatus status = ApplicationStatus.fromString(parts[3]);
             LocalDateTime applicationDate = LocalDateTime.parse(parts[4]);
             LocalDateTime statusUpdateDate = LocalDateTime.parse(parts[5]);
-            
+
             Application application = new Application(applicationID, studentID, internshipID);
             application.setStatus(status);
-            
+
             // Load withdrawal information if present
             if (parts.length > 6 && !parts[6].isEmpty()) {
                 application.requestWithdrawal(parts[6]);
@@ -380,15 +398,15 @@ public class DataManager {
                     }
                 }
             }
-            
+
             return application;
-            
+
         } catch (Exception e) {
             System.err.println("Error parsing application line: " + line + " - " + e.getMessage());
         }
         return null;
     }
-    
+
     /**
      * Format application to file line
      */
@@ -402,7 +420,7 @@ public class DataManager {
         sb.append(application.getStatusUpdateDate()).append("|");
         sb.append(application.getWithdrawalReason() != null ? application.getWithdrawalReason() : "").append("|");
         sb.append(application.isWithdrawalApproved());
-        
+
         return sb.toString();
     }
 }
