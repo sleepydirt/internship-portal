@@ -1,9 +1,9 @@
 package src.boundary;
 
+import java.util.List;
 import src.control.SystemManager;
 import src.entity.*;
 import src.enums.*;
-import java.util.List;
 
 /**
  * Student Menu - Interface for student users
@@ -33,7 +33,7 @@ public class StudentMenu extends BaseMenu {
             System.out.println("Applied Internships: " + student.getAppliedInternships().size() + "/3");
             
             if (student.hasAcceptedInternship()) {
-                System.out.println("✓ Accepted Internship: " + student.getAcceptedInternshipID());
+                System.out.println("Accepted Internship: " + student.getAcceptedInternshipID());
             }
             
             System.out.println("\n--- Menu Options ---");

@@ -1,11 +1,11 @@
 package src.entity;
 
-import src.enums.InternshipLevel;
-import src.enums.InternshipStatus;
-import src.enums.Major;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import src.enums.InternshipLevel;
+import src.enums.InternshipStatus;
+import src.enums.Major;
 
 /**
  * Internship Opportunity entity class
@@ -47,7 +47,7 @@ public class InternshipOpportunity {
                                 InternshipLevel level, Major preferredMajor,
                                 LocalDate openingDate, LocalDate closingDate,
                                 String companyName, String companyRepresentativeID,
-                                int totalSlots) {
+                                int totalSlots , int filledSlots) {
         this.internshipID = internshipID;
         this.title = title;
         this.description = description;
@@ -59,7 +59,7 @@ public class InternshipOpportunity {
         this.companyName = companyName;
         this.companyRepresentativeID = companyRepresentativeID;
         this.totalSlots = totalSlots;
-        this.filledSlots = 0;
+        this.filledSlots = filledSlots;
         this.visible = false; // Initially not visible until approved
         this.applicantIDs = new ArrayList<>();
     }
