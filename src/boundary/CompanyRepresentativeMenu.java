@@ -1,12 +1,12 @@
 package src.boundary;
 
-import src.control.SystemManager;
-import src.entity.*;
-import src.enums.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import src.control.SystemManager;
+import src.entity.*;
+import src.enums.*;
 
 /**
  * Company Representative Menu - Interface for company representative users
@@ -129,6 +129,7 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         }
         
         int totalSlots = getIntInput("Enter total number of slots (1-10): ", 1, 10);
+        int filledSlots = 0 ; // initialised filled slots to 0 
         
         // Confirm creation
         System.out.println("\n--- Internship Summary ---");
@@ -138,12 +139,13 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         System.out.println("Preferred Major: " + preferredMajor);
         System.out.println("Opening Date: " + openingDate);
         System.out.println("Closing Date: " + closingDate);
+        System.out.println("Filled Slots: " + filledSlots);        
         System.out.println("Total Slots: " + totalSlots);
         
         if (confirmAction("Create this internship opportunity?")) {
             InternshipOpportunity internship = systemManager.getInternshipManager()
                     .createInternship(title, description, level, preferredMajor,
-                                    openingDate, closingDate, rep.getUserID(), totalSlots);
+                                    openingDate, closingDate, rep.getUserID(), totalSlots , filledSlots);
             
             if (internship != null) {
                 System.out.println("Internship opportunity created successfully!");
