@@ -219,8 +219,8 @@ public class CareerCenterStaffMenu extends BaseMenu {
         System.out.println("Pending withdrawal requests:");
         for (int i = 0; i < withdrawalRequests.size(); i++) {
             Application app = withdrawalRequests.get(i);
-            InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
-            User student = systemManager.getUser(app.getStudentID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(app.getInternshipID());
+            User student = systemManager.getUserRepository().getById(app.getStudentID());
             
             System.out.printf("[%d] %s - %s\n", i + 1,
                             student != null ? student.getName() : "Unknown",
@@ -233,8 +233,8 @@ public class CareerCenterStaffMenu extends BaseMenu {
         if (choice == 0) return;
         
         Application selectedApp = withdrawalRequests.get(choice - 1);
-        InternshipOpportunity internship = systemManager.getInternship(selectedApp.getInternshipID());
-        User student = systemManager.getUser(selectedApp.getStudentID());
+        InternshipOpportunity internship = systemManager.getInternshipRepository().getById(selectedApp.getInternshipID());
+        User student = systemManager.getUserRepository().getById(selectedApp.getStudentID());
         
         System.out.println("\n--- Withdrawal Request Details ---");
         System.out.println("Student: " + (student != null ? student.getName() : "Unknown"));

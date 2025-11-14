@@ -1,7 +1,5 @@
 package src.control;
 
-import src.entity.*;
-
 /**
  * System Manager - Application Context for the Internship Management System
  * Manages dependency injection and application lifecycle
@@ -128,26 +126,5 @@ public class SystemManager {
      */
     public ApplicationRepository getApplicationRepository() {
         return applicationRepository;
-    }
-
-    // Convenience methods for boundary layer (backward compatibility)
-    /**
-     * Get user by ID
-     * 
-     * @param userID user ID
-     * @return user or null if not found
-     */
-    public User getUser(String userID) {
-        return userRepository.getById(userID);
-    }
-
-    /**
-     * Get internship by ID
-     * 
-     * @param internshipID internship ID
-     * @return internship or null if not found
-     */
-    public InternshipOpportunity getInternship(String internshipID) {
-        return internshipRepository.getById(internshipID);
     }
 }

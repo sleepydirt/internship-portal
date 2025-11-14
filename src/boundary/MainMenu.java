@@ -110,7 +110,7 @@ public class MainMenu {
             return;
         }
         
-        if (systemManager.getUser(email) != null) {
+        if (systemManager.getUserRepository().getById(email) != null) {
             System.out.println("User with this email already exists.");
             return;
         }

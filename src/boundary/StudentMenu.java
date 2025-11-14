@@ -252,7 +252,7 @@ public class StudentMenu extends BaseMenu {
         System.out.println("=" + "=".repeat(80));
 
         for (Application app : applications) {
-            InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(app.getInternshipID());
 
             System.out.printf("Application ID: %s\n", app.getApplicationID());
             System.out.printf("Internship: %s - %s\n",
@@ -300,7 +300,7 @@ public class StudentMenu extends BaseMenu {
         System.out.println("Successful applications available for acceptance:");
         for (int i = 0; i < successfulApps.size(); i++) {
             Application app = successfulApps.get(i);
-            InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(app.getInternshipID());
 
             System.out.printf("[%d] %s - %s\n", i + 1,
                     internship != null ? internship.getTitle() : "Unknown",
@@ -349,7 +349,7 @@ public class StudentMenu extends BaseMenu {
         System.out.println("Applications available for withdrawal:");
         for (int i = 0; i < withdrawableApps.size(); i++) {
             Application app = withdrawableApps.get(i);
-            InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(app.getInternshipID());
 
             System.out.printf("[%d] %s - %s (Status: %s)\n", i + 1,
                     internship != null ? internship.getTitle() : "Unknown",

@@ -332,8 +332,8 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         System.out.println("=" + "=".repeat(100));
         
         for (Application app : applications) {
-            InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
-            User student = systemManager.getUser(app.getStudentID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(app.getInternshipID());
+            User student = systemManager.getUserRepository().getById(app.getStudentID());
             
             System.out.printf("Application ID: %s\n", app.getApplicationID());
             System.out.printf("Internship: %s\n", internship != null ? internship.getTitle() : "Unknown");
@@ -373,8 +373,8 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         System.out.println("Pending applications:");
         for (int i = 0; i < applications.size(); i++) {
             Application app = applications.get(i);
-            InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
-            User student = systemManager.getUser(app.getStudentID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(app.getInternshipID());
+            User student = systemManager.getUserRepository().getById(app.getStudentID());
             
             System.out.printf("[%d] %s - %s (%s)\n", i + 1,
                             internship != null ? internship.getTitle() : "Unknown",
@@ -388,8 +388,8 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             if (choice <= 0 || choice > applications.size()) return;
             
             Application selectedApp = applications.get(choice - 1);
-            InternshipOpportunity internship = systemManager.getInternship(selectedApp.getInternshipID());
-            User student = systemManager.getUser(selectedApp.getStudentID());
+            InternshipOpportunity internship = systemManager.getInternshipRepository().getById(selectedApp.getInternshipID());
+            User student = systemManager.getUserRepository().getById(selectedApp.getStudentID());
             
             System.out.println("\nApplication Details:");
             System.out.println("Application ID: " + selectedApp.getApplicationID());
