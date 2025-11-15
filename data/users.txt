@@ -1,0 +1,6 @@
+STUDENT|U2345678B|Jane Smith|password|2|EEE||
+CAREER_CENTER_STAFF|staff01@ntu.edu.sg|Admin User|password|Career Services
+CAREER_CENTER_STAFF|staff02@ntu.edu.sg|Manager User|password|Student Affairs
+STUDENT|U1234567A|John Doe|password|3|CSC||
+STUDENT|U3456789C|Bob Johnson|password|4|MAE||
+COMPANY_REPRESENTATIVE|hr@techcorp.com|Alice Wilson|password|TechCorp Pte Ltd|Human Resources|HR Manager|true|
