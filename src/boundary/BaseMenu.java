@@ -15,11 +15,11 @@ import java.util.Scanner;
  * @version 1.0
  */
 public abstract class BaseMenu {
-	// System manager reference 
+	/** Reference to the main system manager. */
     protected SystemManager systemManager;
-    // Currently logged-in user 
+    /** The currently logged-in user. */
     protected User currentUser;
-    // Scanner for reading console input 
+    /** Scanner used for reading user input. */
     protected Scanner scanner;
     
     /**
