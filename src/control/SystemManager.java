@@ -7,11 +7,14 @@ import java.util.*;
 /**
  * System Manager - Central controller for the Internship Management System
  * Implements Singleton pattern to ensure single instance
+ * Responsible for managing users, internships, applications, and pending approvals.
+ * Also provides access to specialized managers for each domain.
  * 
  * @author SC2002 Group
  * @version 1.0
  */
 public class SystemManager {
+	//Singleton instance 
     private static SystemManager instance;
     
     // Data storage
@@ -28,6 +31,7 @@ public class SystemManager {
     
     /**
      * Private constructor for Singleton pattern
+     * Initializes all data structures and managers
      */
     private SystemManager() {
         users = new HashMap<>();

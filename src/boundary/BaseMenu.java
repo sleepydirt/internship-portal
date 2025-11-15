@@ -8,12 +8,18 @@ import java.util.Scanner;
  * Base Menu - Abstract base class for all user-specific menus
  * Provides common functionality and interface
  * 
+ * <p>It includes shared utilities such as input handling,
+ * password management, user information display, and logout process.</p>
+ * 
  * @author SC2002 Group
  * @version 1.0
  */
 public abstract class BaseMenu {
+	/** Reference to the main system manager. */
     protected SystemManager systemManager;
+    /** The currently logged-in user. */
     protected User currentUser;
+    /** Scanner used for reading user input. */
     protected Scanner scanner;
     
     /**
@@ -34,7 +40,8 @@ public abstract class BaseMenu {
     public abstract void displayMenu();
     
     /**
-     * Handle password change functionality
+     * Handles the password change process for the current user.
+     * Validates the current password and updates to a new one.
      */
     protected void handlePasswordChange() {
         System.out.println("\n--- Change Password ---");

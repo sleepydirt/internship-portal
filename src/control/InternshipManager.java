@@ -1,13 +1,22 @@
 package src.control;
 
-import src.entity.*;
-import src.enums.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import src.entity.*;
+import src.enums.*;
 
 /**
  * Internship Manager - Handles internship-related operations
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *     <li>Create, update, and delete internships</li>
+ *     <li>Approve or reject internships for visibility to students</li>
+ *     <li>Filter internships for students or career center staff</li>
+ *     <li>Provide internship statistics</li>
+ * </ul>
+ * </p>
  * 
  * @author SC2002 Group
  * @version 1.0
@@ -33,12 +42,13 @@ public class InternshipManager {
      * @param closingDate closing date
      * @param companyRepresentativeID representative creating the internship
      * @param totalSlots total number of slots
+     * @param filledSlots total number of filled slots
      * @return created internship or null if creation failed
      */
     public InternshipOpportunity createInternship(String title, String description,
                                                  InternshipLevel level, Major preferredMajor,
                                                  LocalDate openingDate, LocalDate closingDate,
-                                                 String companyRepresentativeID, int totalSlots) {
+                                                 String companyRepresentativeID, int totalSlots , int filledSlots) {
         
         User user = systemManager.getUser(companyRepresentativeID);
         if (!(user instanceof CompanyRepresentative)) {
@@ -54,7 +64,7 @@ public class InternshipManager {
         InternshipOpportunity internship = new InternshipOpportunity(
             internshipID, title, description, level, preferredMajor,
             openingDate, closingDate, rep.getCompanyName(),
-            companyRepresentativeID, totalSlots
+            companyRepresentativeID, totalSlots, filledSlots
         );
         
         if (systemManager.addInternship(internship)) {

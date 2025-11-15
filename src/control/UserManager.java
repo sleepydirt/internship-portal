@@ -6,11 +6,14 @@ import java.util.*;
 
 /**
  * User Manager - Handles user-related operations
+ * Responsible for authentication, registration, approval, and user listings.
+ * Works closely with SystemManager to manage user data.
  * 
  * @author SC2002 Group
  * @version 1.0
  */
 public class UserManager {
+	//Reference to system manager
     private SystemManager systemManager;
     
     /**
