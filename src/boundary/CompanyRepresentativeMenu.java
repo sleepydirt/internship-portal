@@ -12,6 +12,10 @@ import src.enums.*;
  * Company Representative Menu - Interface for company representative users.
  * Allows representatives to manage internships, view applications,
  * and perform account-related actions.
+ * 
+ * <p>Responsibilities include creating, viewing, editing, deleting internships,
+ * managing applications, toggling internship visibility, and handling account actions.</p>
+ * 
  * @author SC2002 Group
  * @version 1.0
  */
@@ -29,9 +33,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     
     @Override
     public void displayMenu() {
-        /**
-         * Casts the current user to CompanyRepresentative.
-         */
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
         
         while (true) {
@@ -55,15 +56,7 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             System.out.println("8. Change Password");
             System.out.println("9. View Profile");
             System.out.println("10. Logout");
-            
-            /**
-             * Gets user input choice.
-             */
             int choice = getIntInput("Enter your choice: ", 1, 10);
-            
-            /**
-             * Handles menu selection based on user input.
-             */
             switch (choice) {
                 case 1:
                     createInternshipOpportunity();
@@ -101,40 +94,30 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
     
     /**
-     * Create a new internship opportunity.
+     * Creates a new internship opportunity.
+     * <p>
+     * Checks the representative's creation limit, collects internship details including title,
+     * description, level, preferred major, opening and closing dates, and total slots.
+     * Validates the input and confirms creation before adding it to the system.
+     * </p>
      */
     private void createInternshipOpportunity() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
         
-        /**
-         * Checks internship creation limit.
-         */
         if (!rep.canCreateMore()) {
             System.out.println("\nYou have reached the maximum of 5 internship opportunities.");
             return;
         }
         
         System.out.println("\n--- Create Internship Opportunity ---");
-        
-        /**
-         * Collects internship details.
-         */
         String title = getStringInput("Enter internship title: ", true);
         String description = getStringInput("Enter internship description: ", true);
-        
-        /**
-         * Selects internship level.
-         */
         System.out.println("Select internship level:");
         System.out.println("1. Basic");
         System.out.println("2. Intermediate");
         System.out.println("3. Advanced");
         int levelChoice = getIntInput("Enter choice: ", 1, 3);
         InternshipLevel level = InternshipLevel.values()[levelChoice - 1];
-        
-        /**
-         * Selects preferred major.
-         */
         System.out.println("Select preferred major:");
         Major[] majors = Major.values();
         for (int i = 0; i < majors.length; i++) {
@@ -142,31 +125,16 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         }
         int majorChoice = getIntInput("Enter choice: ", 1, majors.length);
         Major preferredMajor = majors[majorChoice - 1];
-        
-        /**
-         * Inputs opening and closing dates.
-         */
         LocalDate openingDate = getDateInput("Enter opening date (YYYY-MM-DD): ");
         LocalDate closingDate = getDateInput("Enter closing date (YYYY-MM-DD): ");
-        
-        /**
-         * Validates date range.
-         */
         if (closingDate.isBefore(openingDate)) {
             System.out.println("Closing date cannot be before opening date.");
             return;
         }
         
         int totalSlots = getIntInput("Enter total number of slots (1-10): ", 1, 10);
-        
-        /**
-         * Initializes filled slots to 0.
-         */
         int filledSlots = 0;
         
-        /**
-         * Displays internship summary for confirmation.
-         */
         System.out.println("\n--- Internship Summary ---");
         System.out.println("Title: " + title);
         System.out.println("Company: " + rep.getCompanyName());
@@ -194,17 +162,17 @@ public class CompanyRepresentativeMenu extends BaseMenu {
 
     /**
      * Displays all internships created by the current representative.
-     * Includes details such as level, major, status, dates, and applicant count.
+     * <p>
+     * Shows details such as ID, title, level, preferred major, status, dates, visibility,
+     * slots filled, total slots, number of applicants, and description.
+     * </p>
      */
     private void viewMyInternships() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
-        
-        /** Get list of internship opportunities */
         System.out.println("\n--- My Internships ---");
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
                 .getInternshipsByRepresentative(rep.getUserID());
         
-        /** Check if there are any created internship */
         if (internships.isEmpty()) {
             System.out.println("You have not created any internships yet.");
             return;
@@ -213,7 +181,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         System.out.println("Found " + internships.size() + " internship(s):");
         System.out.println("=" + "=".repeat(100));
         
-        /** Display internship opportunities */
         for (InternshipOpportunity internship : internships) {
             System.out.printf("ID: %s | Title: %s\n", 
                             internship.getInternshipID(), internship.getTitle());
@@ -250,7 +217,11 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
     
     /**
-     * Edit a pending internship
+     * Edits a pending internship opportunity.
+     * <p>
+     * Lists all pending internships created by the representative, allows selection,
+     * and updates the title or description. Prompts for confirmation before saving changes.
+     * </p>
      */
     private void editInternship() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
@@ -266,7 +237,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             return;
         }
         
-        /** Display pending internships */
         System.out.println("Pending internships:");
         for (int i = 0; i < internships.size(); i++) {
             InternshipOpportunity internship = internships.get(i);
@@ -275,10 +245,7 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         
         int choice = getIntInput("Select internship to edit (0 to cancel): ", 0, internships.size());
         if (choice == 0) return;
-        
         InternshipOpportunity internship = internships.get(choice - 1);
-        
-        /** Show current details */
         System.out.println("\nCurrent details:");
         System.out.println("Title: " + internship.getTitle());
         System.out.println("Description: " + internship.getDescription());
@@ -290,16 +257,11 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         
         System.out.println("\nEnter new details (press Enter to keep current value):");
         
-        /** Prompt new values */
         String newTitle = getStringInput("New title [" + internship.getTitle() + "]: ", false);
         if (newTitle.isEmpty()) newTitle = internship.getTitle();
         
         String newDescription = getStringInput("New description [" + internship.getDescription() + "]: ", false);
         if (newDescription.isEmpty()) newDescription = internship.getDescription();
-        
-        /** For simplicity, we'll keep the current level, major, dates, and slots */
-    
-        /** Save updated values */
         if (confirmAction("Save changes?")) {
             if (systemManager.getInternshipManager().updateInternship(
                     internship.getInternshipID(), newTitle, newDescription,
@@ -314,23 +276,24 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
     
     /**
-     * Delete an internship
+     * Deletes an internship opportunity.
+     * <p>
+     * Displays the representative's internships, allows selection, and confirms deletion.
+     * Cannot delete internships that have approved applications.
+     * </p>
      */
     private void deleteInternship() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
         
-        /** Display a list of internship */
         System.out.println("\n--- Delete Internship ---");
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
                 .getInternshipsByRepresentative(rep.getUserID());
         
-        /** Check if any internship to delete */
         if (internships.isEmpty()) {
             System.out.println("You have no internships to delete.");
             return;
         }
         
-        /** Display internships */
         System.out.println("Your internships:");
         for (int i = 0; i < internships.size(); i++) {
             InternshipOpportunity internship = internships.get(i);
@@ -360,17 +323,17 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
     
     /**
-     * View applications for internships
+     * Displays all applications for the representative's internships.
+     * <p>
+     * Shows student details, internship title, application status, and application date.
+     * </p>
      */
     private void viewApplications() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
-        
-        /** Display a list of all applications */
         System.out.println("\n--- View Applications ---");
         List<Application> applications = systemManager.getApplicationManager()
                 .getApplicationsByRepresentative(rep.getUserID());
         
-        /** Check if there is any application */
         if (applications.isEmpty()) {
             System.out.println("No applications found for your internships.");
             return;
@@ -382,8 +345,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
         for (Application app : applications) {
             InternshipOpportunity internship = systemManager.getInternship(app.getInternshipID());
             User student = systemManager.getUser(app.getStudentID());
-            
-            /** Display application details */
             System.out.printf("Application ID: %s\n", app.getApplicationID());
             System.out.printf("Internship: %s\n", internship != null ? internship.getTitle() : "Unknown");
             System.out.printf("Student: %s (%s)\n", 
@@ -403,25 +364,25 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
 
     /**
-     * Manage applications (approve/reject) for the representative's internships.
+     * Manages pending applications for the representative's internships.
+     * <p>
+     * Allows approving or rejecting applications, updating internship slots if approved,
+     * and ensures proper handling of invalid input or canceled actions.
+     * </p>
      */
     private void manageApplications() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
-        
-        /** Display a list of pending applications */
         System.out.println("\n--- Manage Applications ---");
         List<Application> applications = systemManager.getApplicationManager()
                 .getApplicationsByRepresentative(rep.getUserID()).stream()
                 .filter(app -> app.getStatus() == ApplicationStatus.PENDING)
                 .toList();
         
-        /** Check if there is any pending application */
         if (applications.isEmpty()) {
             System.out.println("No pending applications to manage.");
             return;
         }
         
-        /** Display pending applications */
         System.out.println("Pending applications:");
         for (int i = 0; i < applications.size(); i++) {
             Application app = applications.get(i);
@@ -443,7 +404,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             InternshipOpportunity internship = systemManager.getInternship(selectedApp.getInternshipID());
             User student = systemManager.getUser(selectedApp.getStudentID());
             
-            /** Display information of the selected application */
             System.out.println("\nApplication Details:");
             System.out.println("Application ID: " + selectedApp.getApplicationID());
             System.out.println("Internship: " + (internship != null ? internship.getTitle() : "Unknown"));
@@ -462,7 +422,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             System.out.print("Enter your choice: ");
             int action = Integer.parseInt(scanner.nextLine().trim());
             
-            /** Handle approval or rejection of the application */
             switch (action) {
                 case 1:
                     if (systemManager.getApplicationManager().approveApplication(
@@ -492,26 +451,25 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
     
     /**
-     * Toggle the visibility of approved internships.
-     * Visible internships can be seen by students, hidden ones cannot.
+     * Toggles the visibility of approved internships.
+     * <p>
+     * Allows the representative to hide or make visible internships for students.
+     * Displays current visibility status and confirms changes.
+     * </p>
      */
     private void toggleInternshipVisibility() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
-        
-        /** Display list of approved internships */
         System.out.println("\n--- Toggle Internship Visibility ---");
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
                 .getInternshipsByRepresentative(rep.getUserID()).stream()
                 .filter(i -> i.getStatus() == InternshipStatus.APPROVED)
                 .toList();
         
-        /** Check if there is any approved internship */
         if (internships.isEmpty()) {
             System.out.println("You have no approved internships to toggle visibility.");
             return;
         }
         
-        /** Display approved internships */
         System.out.println("Approved internships:");
         for (int i = 0; i < internships.size(); i++) {
             InternshipOpportunity internship = internships.get(i);
@@ -520,7 +478,6 @@ public class CompanyRepresentativeMenu extends BaseMenu {
                             internship.isVisible() ? "Yes" : "No");
         }
         
-        /** Change visibility for selected internship */
         System.out.print("Select internship to toggle visibility (0 to cancel): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine().trim());
