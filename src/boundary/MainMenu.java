@@ -86,8 +86,6 @@ public class MainMenu {
         
         System.out.print("Enter Password: ");
         String password = scanner.nextLine().trim();
-        
-        //Authenticate user credentials
         User user = systemManager.getUserManager().authenticateUser(userID, password);
         
         if (user != null) {
@@ -139,7 +137,6 @@ public class MainMenu {
             return;
         }
         
-        //Prompt for additional personal and company details
         System.out.print("Enter Full Name: ");
         String name = scanner.nextLine().trim();
         
@@ -154,8 +151,7 @@ public class MainMenu {
         
         System.out.print("Enter Position: ");
         String position = scanner.nextLine().trim();
-        
-        //Register company representative account
+
         if (systemManager.getUserManager().registerCompanyRepresentative(
                 email, name, password, companyName, department, position)) {
             System.out.println("Registration successful! Your account is pending approval from Career Center Staff.");
