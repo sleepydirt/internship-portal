@@ -8,6 +8,15 @@ import src.enums.*;
 
 /**
  * Internship Manager - Handles internship-related operations
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *     <li>Create, update, and delete internships</li>
+ *     <li>Approve or reject internships for visibility to students</li>
+ *     <li>Filter internships for students or career center staff</li>
+ *     <li>Provide internship statistics</li>
+ * </ul>
+ * </p>
  * 
  * @author SC2002 Group
  * @version 1.0

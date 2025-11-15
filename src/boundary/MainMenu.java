@@ -7,11 +7,20 @@ import java.util.Scanner;
 /**
  * Main Menu - Entry point for the application interface
  * 
+ * <p>
+ * Provides options for user login, company representative registration, and system exit.
+ * Routes authenticated users to their respective menus based on their user type.
+ * </p>
+ * 
  * @author SC2002 Group
  * @version 1.0
  */
 public class MainMenu {
+	
+	// Reference to the system manager 
     private SystemManager systemManager;
+    
+    // Scanner for user input 
     private Scanner scanner;
     
     /**
@@ -25,11 +34,16 @@ public class MainMenu {
     
     /**
      * Display main menu and handle user interactions
+     * <p>
+     * Users can choose to login, register as a company representative, or exit the system.
+     * Routes users to the appropriate sub-menu based on their user type after login.
+     * </p>
      */
     public void displayMainMenu() {
         System.out.println("\n=== Welcome to Internship Placement Management System ===");
         
         while (true) {
+        	//Display main menu options
             System.out.println("\n--- Main Menu ---");
             System.out.println("1. Login");
             System.out.println("2. Register Company Representative");
@@ -60,6 +74,10 @@ public class MainMenu {
     
     /**
      * Handle user login
+     * <p>
+     * Prompts user for credentials, authenticates using the UserManager, 
+     * and routes the user to the appropriate menu based on their user type.
+     * </p>
      */
     private void handleLogin() {
         System.out.println("\n--- User Login ---");
@@ -69,6 +87,7 @@ public class MainMenu {
         System.out.print("Enter Password: ");
         String password = scanner.nextLine().trim();
         
+        //Authenticate user credentials
         User user = systemManager.getUserManager().authenticateUser(userID, password);
         
         if (user != null) {
@@ -98,10 +117,15 @@ public class MainMenu {
     
     /**
      * Handle company representative registration
+     * <p>
+     * Prompts the user for company information and personal details, validates input,
+     * and registers the account pending approval by career center staff.
+     * </p>
      */
     private void handleCompanyRegistration() {
         System.out.println("\n--- Company Representative Registration ---");
         
+        //Prompt for company email and validate
         System.out.print("Enter Company Email: ");
         String email = scanner.nextLine().trim();
         
@@ -115,6 +139,7 @@ public class MainMenu {
             return;
         }
         
+        //Prompt for additional personal and company details
         System.out.print("Enter Full Name: ");
         String name = scanner.nextLine().trim();
         
@@ -130,6 +155,7 @@ public class MainMenu {
         System.out.print("Enter Position: ");
         String position = scanner.nextLine().trim();
         
+        //Register company representative account
         if (systemManager.getUserManager().registerCompanyRepresentative(
                 email, name, password, companyName, department, position)) {
             System.out.println("Registration successful! Your account is pending approval from Career Center Staff.");
@@ -142,9 +168,10 @@ public class MainMenu {
      * Handle application exit
      */
     private void handleExit() {
+    	//Display exit message
         System.out.println("\nThank you for using the Internship Placement Management System!");
         System.out.println("Saving data and shutting down...");
-        systemManager.shutdown();
+        systemManager.shutdown(); //save all system data
         scanner.close();
     }
 }
