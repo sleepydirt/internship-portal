@@ -1,14 +1,24 @@
-package src.boundary;
+package boundary;
 
 import java.util.List;
-import src.control.SystemManager;
-import src.control.InternshipFilterSettings;
-import src.entity.*;
-import src.enums.*;
+import control.SystemManager;
+import control.InternshipFilterSettings;
+import entity.*;
+import enums.*;
 
 /**
  * Student Menu - Interface for student users
  * 
+ * <p>
+ * Provides students with functionalities such as viewing available internships, applying
+ * for internships, viewing applications, accepting placements, and requesting withdrawals.
+ * </p>
+ * 
+  * <p>
+ * Responsibilities include ensuring eligibility for applications, filtering available internships,
+ * submitting applications, managing accepted placements, and submitting withdrawal requests.
+ * </p>
+ 
  * @author SC2002 Group
  * @version 1.0
  */
@@ -23,7 +33,14 @@ public class StudentMenu extends BaseMenu {
     public StudentMenu(SystemManager systemManager, User currentUser) {
         super(systemManager, currentUser);
     }
-
+    
+    /**
+     * Displays the main student dashboard menu and handles user selections.
+     * <p>
+     * Provides options for viewing internships, applying, viewing applications,
+     * accepting placements, requesting withdrawal, changing password, and viewing profile.
+     * </p>
+     */
     @Override
     public void displayMenu() {
         Student student = (Student) currentUser;
@@ -37,7 +54,7 @@ public class StudentMenu extends BaseMenu {
             if (student.hasAcceptedInternship()) {
                 System.out.println("Accepted Internship: " + student.getAcceptedInternshipID());
             }
-
+            
             System.out.println("\n--- Menu Options ---");
             System.out.println("1. View Available Internships");
             System.out.println("2. Apply for Internship");
@@ -81,7 +98,10 @@ public class StudentMenu extends BaseMenu {
     }
 
     /**
-     * View available internships with filtering options
+     * Displays available internships with optional filtering by major and level.
+     * <p>
+     * Students can filter internships and view details including company, slots, and description.
+     * </p>
      */
     private void viewAvailableInternships() {
         Student student = (Student) currentUser;
@@ -175,7 +195,10 @@ public class StudentMenu extends BaseMenu {
     }
 
     /**
-     * Apply for an internship
+     * Allows student to apply for an internship.
+     * <p>
+     * Checks eligibility, displays available internships, and submits the application.
+     * </p>
      */
     private void applyForInternship() {
         Student student = (Student) currentUser;
@@ -241,7 +264,10 @@ public class StudentMenu extends BaseMenu {
     }
 
     /**
-     * View student's applications
+     * Displays all applications of the student.
+     * <p>
+     * Shows status, internship details, application date, and withdrawal information if requested.
+     * </p>
      */
     private void viewMyApplications() {
 
@@ -255,7 +281,8 @@ public class StudentMenu extends BaseMenu {
             System.out.println("You have no applications.");
             return;
         }
-
+        
+        //Display applications
         System.out.println("Found " + applications.size() + " application(s):");
         System.out.println("=" + "=".repeat(80));
 
@@ -282,7 +309,10 @@ public class StudentMenu extends BaseMenu {
     }
 
     /**
-     * Accept an internship placement
+     * Allows student to accept a successful internship placement.
+     * <p>
+     * Accepting a placement automatically withdraws all other applications.
+     * </p>
      */
     private void acceptInternshipPlacement() {
         Student student = (Student) currentUser;
@@ -304,7 +334,8 @@ public class StudentMenu extends BaseMenu {
             System.out.println("You have no successful applications to accept.");
             return;
         }
-
+        
+        //Display successful applications
         System.out.println("Successful applications available for acceptance:");
         for (int i = 0; i < successfulApps.size(); i++) {
             Application app = successfulApps.get(i);
@@ -335,7 +366,11 @@ public class StudentMenu extends BaseMenu {
     }
 
     /**
-     * Request withdrawal from an application
+     * Allows student to request withdrawal from an application.
+     * <p>
+     * Only applications that are eligible for withdrawal and not already requested can be withdrawn.
+     * Prompts the student for a reason and submits the withdrawal request.
+     * </p>
      */
     private void requestWithdrawal() {
         Student student = (Student) currentUser;
@@ -353,7 +388,8 @@ public class StudentMenu extends BaseMenu {
             System.out.println("You have no applications that can be withdrawn.");
             return;
         }
-
+        
+        //Display withdrawable applications
         System.out.println("Applications available for withdrawal:");
         for (int i = 0; i < withdrawableApps.size(); i++) {
             Application app = withdrawableApps.get(i);

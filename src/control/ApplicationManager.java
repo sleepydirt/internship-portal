@@ -1,12 +1,17 @@
-package src.control;
+package control;
 
-import src.entity.*;
-import src.enums.*;
+import entity.*;
+import enums.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Application Manager - Handles application-related operations
+ * 
+ * <p>
+ * Responsibilities include submitting applications, approving/rejecting applications,
+ * accepting placements, managing withdrawals, and retrieving statistics.
+ * </p>
  * 
  * @author SC2002 Group
  * @version 1.0
@@ -33,14 +38,23 @@ public class ApplicationManager {
     /**
      * Submit an application for an internship
      * 
-     * @param studentID    student ID
+     * <p>
+     * Performs multiple checks:
+     * <ul>
+     *     <li>Student eligibility</li>
+     *     <li>Internship availability</li>
+     *     <li>Duplicate applications</li>
+     * </ul>
+     * </p>
+     * 
+     * @param studentID student ID
      * @param internshipID internship ID
      * @return application if successful, null otherwise
      */
     public Application submitApplication(String studentID, String internshipID) {
         User user = userRepository.getById(studentID);
         InternshipOpportunity internship = internshipRepository.getById(internshipID);
-
+        // Validate student and internship
         if (!(user instanceof Student) || internship == null) {
             return null;
         }
@@ -81,8 +95,7 @@ public class ApplicationManager {
     }
 
     /**
-     * Get applications by student
-     * 
+     * Retrieves all applications submitted by a specific student.
      * @param studentID student ID
      * @return list of applications
      */
@@ -94,8 +107,7 @@ public class ApplicationManager {
     }
 
     /**
-     * Get applications for an internship
-     * 
+     * Retrieves all applications submitted for a specific internship.
      * @param internshipID internship ID
      * @return list of applications
      */
@@ -107,8 +119,7 @@ public class ApplicationManager {
     }
 
     /**
-     * Get applications by company representative
-     * 
+     * Retrieves all applications for internships managed by a specific company representative.
      * @param representativeID representative ID
      * @return list of applications
      */
@@ -175,7 +186,9 @@ public class ApplicationManager {
 
     /**
      * Accept internship placement (by student)
-     * 
+     *  <p>
+     * Accepting a placement will withdraw all other applications automatically.
+     * </p>
      * @param applicationID application ID
      * @param studentID     student accepting
      * @return true if accepted successfully
@@ -233,7 +246,7 @@ public class ApplicationManager {
 
     /**
      * Approve withdrawal request (by career center staff)
-     * 
+     * Updates student and internship records accordingly.
      * @param applicationID application ID
      * @return true if withdrawal approved
      */
@@ -282,8 +295,7 @@ public class ApplicationManager {
     }
 
     /**
-     * Get all withdrawal requests
-     * 
+     * Retrieves all withdrawal requests
      * @return list of applications with withdrawal requests
      */
     public List<Application> getWithdrawalRequests() {
@@ -318,8 +330,7 @@ public class ApplicationManager {
     }
 
     /**
-     * Get application statistics
-     * 
+     * Retrieves application statistics
      * @return map of statistics
      */
     public Map<String, Integer> getApplicationStatistics() {

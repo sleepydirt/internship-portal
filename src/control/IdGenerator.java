@@ -1,4 +1,4 @@
-package src.control;
+package control;
 
 /**
  * Generates unique IDs for entities.

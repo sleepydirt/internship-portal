@@ -84,7 +84,7 @@ The application follows Object-Oriented Design principles with clear separation 
 2. **Run the application:**
    Bash/Powershell
    ```ps
-   java -cp build src.Main
+   java -cp build Main
    ```
 
 ### Default Users

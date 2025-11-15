@@ -1,6 +1,6 @@
-package src.control;
+package control;
 
-import src.entity.InternshipOpportunity;
+import entity.InternshipOpportunity;
 import java.util.*;
 
 /**

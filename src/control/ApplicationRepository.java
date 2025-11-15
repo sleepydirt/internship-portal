@@ -1,6 +1,6 @@
-package src.control;
+package control;
 
-import src.entity.Application;
+import entity.Application;
 import java.util.*;
 
 /**

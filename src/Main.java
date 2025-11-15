@@ -1,7 +1,5 @@
-package src;
-
-import src.boundary.MainMenu;
-import src.control.SystemManager;
+import boundary.MainMenu;
+import control.SystemManager;
 
 /**
  * Main class for the Internship Placement Management System

@@ -1,13 +1,18 @@
-package src.control;
+package control;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import src.entity.*;
-import src.enums.*;
+import entity.*;
+import enums.*;
 
 /**
  * Data Manager - Handles file I/O operations for data persistence
+ * 
+ * <p>
+ * Responsibilities include loading and saving users, internships, and applications
+ * to plain text files, parsing them into objects, and formatting objects for storage.
+ * </p>
  * 
  * @author SC2002 Group
  * @version 1.0
@@ -54,6 +59,9 @@ public class DataManager {
 
     /**
      * Load all data from files
+     * <p>
+     * If no data exists, default users are created and saved.
+     * </p>
      */
     public void loadAllData() {
         loadUsers();

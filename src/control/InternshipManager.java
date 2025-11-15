@@ -1,13 +1,22 @@
-package src.control;
+package control;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import src.entity.*;
-import src.enums.*;
+import entity.*;
+import enums.*;
 
 /**
  * Internship Manager - Handles internship-related operations
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *     <li>Create, update, and delete internships</li>
+ *     <li>Approve or reject internships for visibility to students</li>
+ *     <li>Filter internships for students or career center staff</li>
+ *     <li>Provide internship statistics</li>
+ * </ul>
+ * </p>
  * 
  * @author SC2002 Group
  * @version 1.0

@@ -1,11 +1,11 @@
-package src.boundary;
+package boundary;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import src.control.InternshipFilterSettings;
-import src.enums.*;
+import control.InternshipFilterSettings;
+import enums.*;
 
 /**
  * Filter UI Helper - Provides common filter input methods

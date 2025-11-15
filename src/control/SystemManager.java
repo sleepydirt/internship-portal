@@ -1,4 +1,4 @@
-package src.control;
+package control;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +7,14 @@ import java.util.Map;
  * System Manager - Application Context for the Internship Management System
  * Manages dependency injection and application lifecycle
  * Implements Singleton pattern to ensure single instance
+ * Responsible for managing users, internships, applications, and pending approvals.
+ * Also provides access to specialized managers for each domain.
  * 
  * @author SC2002 Group
  * @version 1.0
  */
 public class SystemManager {
+	//Singleton instance 
     private static SystemManager instance;
 
     // Repositories (data layer)

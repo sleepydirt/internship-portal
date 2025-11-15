@@ -1,11 +1,13 @@
-package src.control;
+package control;
 
-import src.entity.*;
-import src.enums.Major;
+import entity.*;
+import enums.Major;
 import java.util.*;
 
 /**
  * User Manager - Handles user-related operations
+ * Responsible for authentication, registration, approval, and user listings.
+ * Works closely with SystemManager to manage user data.
  * 
  * @author SC2002 Group
  * @version 1.0

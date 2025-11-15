@@ -1,6 +1,6 @@
-package src.control;
+package control;
 
-import src.enums.*;
+import enums.*;
 import java.time.LocalDate;
 
 /**
