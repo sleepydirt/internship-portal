@@ -107,6 +107,29 @@ public class InternshipManager {
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
     }
+    
+    /**
+     * Get internships visible to students with comprehensive filter settings
+     * Students can see internships they applied for even if visibility is off
+     * 
+     * @param student student viewing the internships
+     * @param filterSettings filter settings to apply
+     * @return filtered list of internships
+     */
+    public List<InternshipOpportunity> getVisibleInternshipsWithFilters(Student student,
+            InternshipFilterSettings filterSettings) {
+        return internshipRepository.getAll().values().stream()
+                // Students can see: visible internships OR internships they've applied to
+                .filter(internship -> internship.isVisible() || 
+                                     student.getAppliedInternships().contains(internship.getInternshipID()))
+                .filter(internship -> internship.getStatus() == InternshipStatus.APPROVED)
+                .filter(internship -> internship.isStudentEligible(student))
+                .filter(internship -> applyFilterSettings(internship, filterSettings))
+                .filter(internship -> !filterSettings.isShowOnlyApplied() || 
+                                     student.getAppliedInternships().contains(internship.getInternshipID()))
+                .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
+                .collect(Collectors.toList());
+    }
 
     /**
      * Get all internships for career center staff with filters
@@ -125,6 +148,77 @@ public class InternshipManager {
                 .filter(internship -> levelFilter == null || internship.getLevel() == levelFilter)
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
+    }
+    
+    /**
+     * Get all internships for career center staff with comprehensive filter settings
+     * 
+     * @param filterSettings filter settings to apply
+     * @return filtered list of internships
+     */
+    public List<InternshipOpportunity> getAllInternshipsWithFilters(InternshipFilterSettings filterSettings) {
+        return internshipRepository.getAll().values().stream()
+                .filter(internship -> applyFilterSettings(internship, filterSettings))
+                .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * Get internships created by a company representative with filter settings
+     * 
+     * @param representativeID representative ID
+     * @param filterSettings filter settings to apply
+     * @return filtered list of internships
+     */
+    public List<InternshipOpportunity> getInternshipsByRepresentativeWithFilters(String representativeID,
+            InternshipFilterSettings filterSettings) {
+        return internshipRepository.getAll().values().stream()
+                .filter(internship -> internship.getCompanyRepresentativeID().equals(representativeID))
+                .filter(internship -> applyFilterSettings(internship, filterSettings))
+                .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * Helper method to apply filter settings to an internship
+     * Centralises the filter logic to avoid duplication
+     * 
+     * @param internship internship to check
+     * @param filterSettings filter settings to apply
+     * @return true if internship passes all filters
+     */
+    private boolean applyFilterSettings(InternshipOpportunity internship, InternshipFilterSettings filterSettings) {
+        if (filterSettings.getStatusFilter() != null && 
+            internship.getStatus() != filterSettings.getStatusFilter()) {
+            return false;
+        }
+        
+        if (filterSettings.getMajorFilter() != null && 
+            internship.getPreferredMajor() != filterSettings.getMajorFilter()) {
+            return false;
+        }
+        
+        if (filterSettings.getLevelFilter() != null && 
+            internship.getLevel() != filterSettings.getLevelFilter()) {
+            return false;
+        }
+        
+        if (filterSettings.getClosingDateFrom() != null && 
+            internship.getClosingDate().isBefore(filterSettings.getClosingDateFrom())) {
+            return false;
+        }
+        
+        if (filterSettings.getClosingDateTo() != null && 
+            internship.getClosingDate().isAfter(filterSettings.getClosingDateTo())) {
+            return false;
+        }
+        
+        if (filterSettings.getMinAvailableSlots() != null && 
+            internship.getAvailableSlots() < filterSettings.getMinAvailableSlots()) {
+            return false;
+        }
+        
+        return true;
     }
 
     /**

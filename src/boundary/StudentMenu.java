@@ -2,6 +2,7 @@ package src.boundary;
 
 import java.util.List;
 import src.control.SystemManager;
+import src.control.InternshipFilterSettings;
 import src.entity.*;
 import src.enums.*;
 
@@ -83,78 +84,87 @@ public class StudentMenu extends BaseMenu {
      * View available internships with filtering options
      */
     private void viewAvailableInternships() {
-        final String RESET = "\u001B[0m";
-        final String ITALIC = "\u001B[3m";
-        final String UNDERLINE = "\u001B[4m";
-        System.out.println("\n--- " + UNDERLINE + "Available Internships" + RESET + " ---");
-
-        // Get filter options
-        // MAJOR FILTER
-        System.out.println(UNDERLINE + ITALIC + "Filtering by Major" + RESET);
-        int index = 1;
-        for (Major m : Major.values()) {
-            System.out.println(index + ". " + m.getDisplayName());
-            index++;
-        }
-
-        System.out.print("Select Major (1-" + Major.values().length + ", or press Enter for all): ");
-        String majorFilter = scanner.nextLine().trim();
-        int majorChoice = majorFilter.isEmpty() ? -1 : Integer.parseInt(majorFilter); // int choice index
-        Major major;
-        if (majorChoice >= 1 && majorChoice <= Major.values().length) {
-            major = Major.values()[majorChoice - 1];
-        } else {
-            major = null; // user pressed Enter or invalid number
-        }
-        //Major major = majorFilter.isEmpty() ? null : Major.fromString(major);
-        // expecting string
-
-        // LEVEL FILTER
-        System.out.println(UNDERLINE + ITALIC + "Filtering by Level" + RESET);
-        System.out.println("1. BASIC");
-        System.out.println("2. INTERMEDIATE");
-        System.out.println("3. ADVANCED");
-        System.out.print("Filter by Level (BASIC/INTERMEDIATE/ADVANCED or Enter for all): ");
-        String choiceInput = scanner.nextLine().trim();
-        int choice = choiceInput.isEmpty() ? -1 : Integer.parseInt(choiceInput);
-
-        String levelFilter;
-        switch (choice) {
-            case 1:
-                levelFilter = "BASIC";
-                break;
-            case 2:
-                levelFilter = "INTERMEDIATE";
-                break;
-            case 3:
-                levelFilter = "ADVANCED";
-                break;
-            default:
-                levelFilter = null;
-        }
-        // String levelFilter = scanner.nextLine().trim();
-        InternshipLevel level = (levelFilter == null || levelFilter.isEmpty()) ? null
-                : InternshipLevel.fromString(levelFilter);
-
         Student student = (Student) currentUser;
+        InternshipFilterSettings filterSettings = systemManager.getFilterSettings(student.getUserID());
+        FilterUIHelper filterHelper = new FilterUIHelper(scanner);
+        
+        // Check if filters have been configured before
+        if (!filterSettings.hasActiveFilters() && !hasViewedBefore(student.getUserID())) {
+            // First time viewing, so display filter builder template
+            filterHelper.buildFiltersSequentially(filterSettings);
+            markAsViewed(student.getUserID());
+        }
+        
+        // Display internships with current filters
+        displayFilteredInternships(student, filterSettings);
+        
+        // Single prompt: reconfigure or return
+        System.out.print("\nPress 'f' to reconfigure filters, or Enter to return: ");
+        String input = scanner.nextLine().trim().toLowerCase();
+        if (input.equals("f")) {
+            filterSettings.clearAll();
+            filterHelper.buildFiltersSequentially(filterSettings);
+            displayFilteredInternships(student, filterSettings);
+            System.out.print("\nPress Enter to return: ");
+            scanner.nextLine();
+        }
+    }
+    
+    /**
+     * Check if user has viewed internships before in this session
+     * @param userID user ID to check
+     * @return true if user has configured filters before
+     */
+    private boolean hasViewedBefore(String userID) {
+        return systemManager.hasViewedInternships(userID);
+    }
+    
+    /**
+     * Mark that user has viewed internships and configured filters
+     * @param userID user ID to mark
+     */
+    private void markAsViewed(String userID) {
+        systemManager.markInternshipsViewed(userID);
+    }
+    
+    /**
+     * Display filtered internships
+     */
+    private void displayFilteredInternships(Student student, InternshipFilterSettings filterSettings) {
+        // Show active filters at the top
+        if (filterSettings.hasActiveFilters()) {
+            System.out.println("\n" + filterSettings.getFilterSummary());
+        } else {
+            System.out.println("\nNo filters applied (showing all eligible internships)");
+        }
+        
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
-                .getVisibleInternships(student, InternshipStatus.APPROVED, major, level);
+                .getVisibleInternshipsWithFilters(student, filterSettings);
 
         if (internships.isEmpty()) {
             System.out.println("No internships available matching your criteria.");
             return;
         }
 
-        System.out.println("\nFound " + internships.size() + " internship(s):");
+        System.out.println("\n--- \u001B[4mAvailable Internships\u001B[0m ---");
+        System.out.println("Found " + internships.size() + " internship(s):");
         System.out.println("=" + "=".repeat(100));
 
         for (int i = 0; i < internships.size(); i++) {
             InternshipOpportunity internship = internships.get(i);
-            System.out.printf("[%d] %s\n", i + 1, internship.getTitle());
+            
+            // Mark if student has applied
+            String appliedMark = student.getAppliedInternships().contains(internship.getInternshipID()) 
+                               ? " [APPLIED]" : "";
+            
+            // Mark if visibility is off (student can still see because they applied)
+            String visibilityMark = !internship.isVisible() ? " [HIDDEN]" : "";
+            
+            System.out.printf("[%d] %s%s%s\n", i + 1, internship.getTitle(), appliedMark, visibilityMark);
             System.out.printf("    Company: %s | Level: %s | Major: %s\n",
                     internship.getCompanyName(),
                     internship.getLevel(),
-                    internship.getPreferredMajor());
+                    internship.getPreferredMajor().getDisplayName());
             System.out.printf("    Slots: %d/%d | Closing: %s\n",
                     internship.getFilledSlots(),
                     internship.getTotalSlots(),
@@ -162,8 +172,6 @@ public class StudentMenu extends BaseMenu {
             System.out.printf("    Description: %s\n", internship.getDescription());
             System.out.println("    " + "-".repeat(90));
         }
-
-        pauseForUser();
     }
 
     /**

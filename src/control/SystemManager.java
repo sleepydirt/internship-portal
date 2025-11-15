@@ -1,5 +1,8 @@
 package src.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * System Manager - Application Context for the Internship Management System
  * Manages dependency injection and application lifecycle
@@ -24,6 +27,12 @@ public class SystemManager {
     private final InternshipManager internshipManager;
     private final ApplicationManager applicationManager;
     private final DataManager dataManager;
+    
+    // Session-based filter settings (per user)
+    private final Map<String, InternshipFilterSettings> userFilterSettings;
+    
+    // Track if user has viewed internships (for first-time filter prompt)
+    private final Map<String, Boolean> hasViewedInternships;
 
     /**
      * Private constructor - initializes all dependencies
@@ -43,6 +52,10 @@ public class SystemManager {
         this.applicationManager = new ApplicationManager(applicationRepository, userRepository, internshipRepository,
                 idGenerator);
         this.dataManager = new DataManager(userRepository, internshipRepository, applicationRepository, userManager);
+        
+        // Initialize session-based filter settings
+        this.userFilterSettings = new HashMap<>();
+        this.hasViewedInternships = new HashMap<>();
     }
 
     /**
@@ -126,5 +139,46 @@ public class SystemManager {
      */
     public ApplicationRepository getApplicationRepository() {
         return applicationRepository;
+    }
+    
+    // Filter settings management (session-scoped)
+    /**
+     * Get filter settings for a user 
+     * Creates new filter settings if doesn't exist
+     * 
+     * @param userID user ID
+     * @return filter settings for the user
+     */
+    public InternshipFilterSettings getFilterSettings(String userID) {
+        return userFilterSettings.computeIfAbsent(userID, k -> new InternshipFilterSettings());
+    }
+    
+    /**
+     * Clear filter settings for a user
+     * 
+     * @param userID user ID
+     */
+    public void clearFilterSettings(String userID) {
+        userFilterSettings.remove(userID);
+        hasViewedInternships.remove(userID);
+    }
+    
+    /**
+     * Check if user has viewed internships before in this session
+     * 
+     * @param userID user ID
+     * @return true if user has viewed internships before
+     */
+    public boolean hasViewedInternships(String userID) {
+        return hasViewedInternships.getOrDefault(userID, false);
+    }
+    
+    /**
+     * Mark that user has viewed internships
+     * 
+     * @param userID user ID
+     */
+    public void markInternshipsViewed(String userID) {
+        hasViewedInternships.put(userID, true);
     }
 }

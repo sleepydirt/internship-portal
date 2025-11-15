@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import src.control.SystemManager;
+import src.control.InternshipFilterSettings;
 import src.entity.*;
 import src.enums.*;
 
@@ -158,20 +159,72 @@ public class CompanyRepresentativeMenu extends BaseMenu {
     }
     
     /**
-     * View internships created by this representative
+     * View internships created by this representative with filters
      */
     private void viewMyInternships() {
         CompanyRepresentative rep = (CompanyRepresentative) currentUser;
+        InternshipFilterSettings filterSettings = systemManager.getFilterSettings(rep.getUserID());
+        FilterUIHelper filterHelper = new FilterUIHelper(scanner);
         
-        System.out.println("\n--- My Internships ---");
+        // Check if filters have been configured before
+        if (!filterSettings.hasActiveFilters() && !hasViewedBefore(rep.getUserID())) {
+            // First time viewing - build filters sequentially
+            filterHelper.buildFiltersWithStatus(filterSettings);
+            markAsViewed(rep.getUserID());
+        }
+        
+        // Display internships with current filters
+        displayFilteredInternships(rep, filterSettings);
+        
+        // Single prompt: reconfigure or return
+        System.out.print("\nPress 'f' to reconfigure filters, or Enter to return: ");
+        String input = scanner.nextLine().trim().toLowerCase();
+        if (input.equals("f")) {
+            filterSettings.clearAll();
+            filterHelper.buildFiltersWithStatus(filterSettings);
+            displayFilteredInternships(rep, filterSettings);
+            System.out.print("\nPress Enter to return: ");
+            scanner.nextLine();
+        }
+    }
+    
+    /**
+     * Check if user has viewed internships before in this session
+     * @param userID user ID to check
+     * @return true if user has configured filters before
+     */
+    private boolean hasViewedBefore(String userID) {
+        return systemManager.hasViewedInternships(userID);
+    }
+    
+    /**
+     * Mark that user has viewed internships and configured filters
+     * @param userID user ID to mark
+     */
+    private void markAsViewed(String userID) {
+        systemManager.markInternshipsViewed(userID);
+    }
+    
+    /**
+     * Display filtered internships for company representative
+     */
+    private void displayFilteredInternships(CompanyRepresentative rep, InternshipFilterSettings filterSettings) {
+        // Show active filters at the top
+        if (filterSettings.hasActiveFilters()) {
+            System.out.println("\n" + filterSettings.getFilterSummary());
+        } else {
+            System.out.println("\nNo filters applied (showing all your internships)");
+        }
+        
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
-                .getInternshipsByRepresentative(rep.getUserID());
+                .getInternshipsByRepresentativeWithFilters(rep.getUserID(), filterSettings);
         
         if (internships.isEmpty()) {
-            System.out.println("You have not created any internships yet.");
+            System.out.println("No internships match your criteria.");
             return;
         }
         
+        System.out.println("\n--- \u001B[4mMy Internships\u001B[0m ---");
         System.out.println("Found " + internships.size() + " internship(s):");
         System.out.println("=" + "=".repeat(100));
         
@@ -179,17 +232,17 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             System.out.printf("ID: %s | Title: %s\n", 
                             internship.getInternshipID(), internship.getTitle());
             System.out.printf("Level: %s | Major: %s | Status: %s\n",
-                            internship.getLevel(), internship.getPreferredMajor(), internship.getStatus());
+                            internship.getLevel(), internship.getPreferredMajor().getDisplayName(), 
+                            internship.getStatus());
             System.out.printf("Dates: %s to %s | Visible: %s\n",
-                            internship.getOpeningDate(), internship.getClosingDate(), internship.isVisible());
+                            internship.getOpeningDate(), internship.getClosingDate(), 
+                            internship.isVisible());
             System.out.printf("Slots: %d/%d | Applicants: %d\n",
                             internship.getFilledSlots(), internship.getTotalSlots(), 
                             internship.getApplicantIDs().size());
             System.out.printf("Description: %s\n", internship.getDescription());
             System.out.println("-".repeat(100));
         }
-        
-        pauseForUser();
     }
     
     /**
@@ -202,10 +255,14 @@ public class CompanyRepresentativeMenu extends BaseMenu {
             System.out.print(prompt);
             String dateStr = scanner.nextLine().trim();
             
+            if (dateStr.isEmpty()) {
+                return null;
+            }
+            
             try {
                 return LocalDate.parse(dateStr, formatter);
             } catch (DateTimeParseException e) {
-                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                System.out.println("Invalid date format. Please use YYYY-MM-DD or press Enter to skip.");
             }
         }
     }

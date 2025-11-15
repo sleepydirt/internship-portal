@@ -145,6 +145,8 @@ public abstract class BaseMenu {
      */
     protected void handleLogout() {
         System.out.println("\nLogging out " + currentUser.getName() + "...");
+        // Clear filter settings for this user session
+        systemManager.clearFilterSettings(currentUser.getUserID());
         System.out.println("Thank you for using the system!");
     }
 }

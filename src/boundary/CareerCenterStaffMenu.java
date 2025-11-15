@@ -3,6 +3,7 @@ package src.boundary;
 import java.util.List;
 import java.util.Map;
 import src.control.SystemManager;
+import src.control.InternshipFilterSettings;
 import src.entity.*;
 import src.enums.*;
 
@@ -406,34 +407,86 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * View all internships
+     * View all internships with filter options
      */
     private void viewAllInternships() {
-        System.out.println("\n--- All Internships ---");
+        CareerCenterStaff staff = (CareerCenterStaff) currentUser;
+        InternshipFilterSettings filterSettings = systemManager.getFilterSettings(staff.getUserID());
+        FilterUIHelper filterHelper = new FilterUIHelper(scanner);
+        
+        // Check if filters have been configured before
+        if (!filterSettings.hasActiveFilters() && !hasViewedBefore(staff.getUserID())) {
+            // First time viewing - build filters sequentially
+            filterHelper.buildFiltersWithStatus(filterSettings);
+            markAsViewed(staff.getUserID());
+        }
+        
+        // Display internships with current filters (no pause inside)
+        displayFilteredInternships(filterSettings);
+        
+        // Single prompt: reconfigure or return
+        System.out.print("\nPress 'f' to reconfigure filters, or Enter to return: ");
+        String input = scanner.nextLine().trim().toLowerCase();
+        if (input.equals("f")) {
+            filterSettings.clearAll();
+            filterHelper.buildFiltersWithStatus(filterSettings);
+            displayFilteredInternships(filterSettings);
+            System.out.print("\nPress Enter to return: ");
+            scanner.nextLine();
+        }
+    }
+    
+    /**
+     * Check if user has viewed internships before in this session
+     * @param userID user ID to check
+     * @return true if user has configured filters before
+     */
+    private boolean hasViewedBefore(String userID) {
+        return systemManager.hasViewedInternships(userID);
+    }
+    
+    /**
+     * Mark that user has viewed internships and configured filters
+     * @param userID user ID to mark
+     */
+    private void markAsViewed(String userID) {
+        systemManager.markInternshipsViewed(userID);
+    }
+    
+    /**
+     * Display filtered internships for staff
+     */
+    private void displayFilteredInternships(InternshipFilterSettings filterSettings) {
+        // Show active filters at the top
+        if (filterSettings.hasActiveFilters()) {
+            System.out.println("\n" + filterSettings.getFilterSummary());
+        } else {
+            System.out.println("\nNo filters applied (showing all internships)");
+        }
+        
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
-                .getAllInternships(null, null, null);
+                .getAllInternshipsWithFilters(filterSettings);
         
         if (internships.isEmpty()) {
-            System.out.println("No internships found.");
+            System.out.println("No internships match your criteria.");
             return;
         }
         
+        System.out.println("\n--- \u001B[4mAll Internships\u001B[0m ---");
         System.out.println("Found " + internships.size() + " internship(s):");
-        System.out.println("=" + "=".repeat(120));
+        System.out.println("=".repeat(120));
         
         for (InternshipOpportunity internship : internships) {
             System.out.printf("ID: %s | Title: %s\n", internship.getInternshipID(), internship.getTitle());
             System.out.printf("Company: %s | Level: %s | Status: %s\n",
                             internship.getCompanyName(), internship.getLevel(), internship.getStatus());
             System.out.printf("Major: %s | Visible: %s | Slots: %d/%d\n",
-                            internship.getPreferredMajor(), internship.isVisible(),
+                            internship.getPreferredMajor().getDisplayName(), internship.isVisible(),
                             internship.getFilledSlots(), internship.getTotalSlots());
             System.out.printf("Dates: %s to %s | Applicants: %d\n",
                             internship.getOpeningDate(), internship.getClosingDate(),
                             internship.getApplicantIDs().size());
             System.out.println("-".repeat(120));
         }
-        
-        pauseForUser();
     }
 }
