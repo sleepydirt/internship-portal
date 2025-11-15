@@ -13,6 +13,11 @@ import src.enums.*;
  * for internships, viewing applications, accepting placements, and requesting withdrawals.
  * </p>
  * 
+  * <p>
+ * Responsibilities include ensuring eligibility for applications, filtering available internships,
+ * submitting applications, managing accepted placements, and submitting withdrawal requests.
+ * </p>
+ 
  * @author SC2002 Group
  * @version 1.0
  */
@@ -40,7 +45,6 @@ public class StudentMenu extends BaseMenu {
         Student student = (Student) currentUser;
 
         while (true) {
-        	//Display student dashboard header
             System.out.println("\n=== Student Dashboard ===");
             System.out.println("Welcome, " + student.getName());
             System.out.println("Year: " + student.getYearOfStudy() + " | Major: " + student.getMajor());
@@ -50,7 +54,6 @@ public class StudentMenu extends BaseMenu {
                 System.out.println("Accepted Internship: " + student.getAcceptedInternshipID());
             }
             
-            //Display menu options
             System.out.println("\n--- Menu Options ---");
             System.out.println("1. View Available Internships");
             System.out.println("2. Apply for Internship");
