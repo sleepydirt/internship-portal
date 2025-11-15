@@ -17,10 +17,10 @@ import java.util.Scanner;
  */
 public class MainMenu {
 	
-	// Reference to the system manager 
+	/** Reference to the system manager for accessing system operations */
     private SystemManager systemManager;
     
-    // Scanner for user input 
+    /** Scanner for reading user input from the console */
     private Scanner scanner;
     
     /**
