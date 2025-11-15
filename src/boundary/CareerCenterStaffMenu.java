@@ -34,15 +34,12 @@ public class CareerCenterStaffMenu extends BaseMenu {
      */
     @Override
     public void displayMenu() {
-    	// Cast current user to CareerCenterStaff 
         CareerCenterStaff staff = (CareerCenterStaff) currentUser;
         
         while (true) {
             System.out.println("\n=== Career Center Staff Dashboard ===");
             System.out.println("Welcome, " + staff.getName());
             System.out.println("Department: " + staff.getStaffDepartment());
-            
-            // Display Menu Option 
             System.out.println("\n--- Menu Options ---");
             System.out.println("1. Approve/Reject Company Representatives");
             System.out.println("2. Approve/Reject Internship Opportunities");
@@ -54,10 +51,7 @@ public class CareerCenterStaffMenu extends BaseMenu {
             System.out.println("8. View Profile");
             System.out.println("9. Logout");
             
-            // Get user choice with validation 
             int choice = getIntInput("Enter your choice: ", 1, 9);
-            
-            //Handle menu selection
             switch (choice) {
                 case 1:
                     manageCompanyRepresentatives();
@@ -92,21 +86,19 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Manage company representative approvals
+     * Displays pending company representatives for approval or rejection,
+     * shows detailed information for a selected representative, 
+     * and allows the staff to approve or reject them.
      */
     private void manageCompanyRepresentatives() {
         System.out.println("\n--- Manage Company Representatives ---");
-        
-        //Get list of pending company representative awaiting approval
         List<CompanyRepresentative> pendingReps = systemManager.getUserManager().getPendingApprovals();
         
-        //Check if there are any pending approvals
         if (pendingReps.isEmpty()) {
             System.out.println("No pending company representative approvals.");
             return;
         }
         
-        //Display all pending representatives with their infomation
         System.out.println("Pending approvals:");
         for (int i = 0; i < pendingReps.size(); i++) {
             CompanyRepresentative rep = pendingReps.get(i);
@@ -115,11 +107,9 @@ public class CareerCenterStaffMenu extends BaseMenu {
                             rep.getCompanyName(), rep.getDepartment(), rep.getPosition());
         }
         
-        //Get user selection
         int choice = getIntInput("Select representative to review (0 to cancel): ", 0, pendingReps.size());
         if (choice == 0) return; // 0 to cancel
         
-        //Get selected representative 
         CompanyRepresentative selectedRep = pendingReps.get(choice - 1);
         
         //Display detailed information about selected representative 
@@ -130,14 +120,12 @@ public class CareerCenterStaffMenu extends BaseMenu {
         System.out.println("Department: " + selectedRep.getDepartment());
         System.out.println("Position: " + selectedRep.getPosition());
         
-        //Display action options
         System.out.println("\n1. Approve");
         System.out.println("2. Reject");
         System.out.println("3. Cancel");
         
         int action = getIntInput("Enter your choice: ", 1, 3);
         
-        //Handle approval/rejection
         switch (action) {
             case 1:
                 if (systemManager.getUserManager().approveCompanyRepresentative(selectedRep.getUserID())) {
@@ -161,22 +149,20 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Displays and handles pending internship opportunity approvals or rejections.
+     * Displays pending internship opportunities for approval or rejection,
+     * shows detailed information for a selected internship, 
+     * and allows the staff to approve or reject it.
      */
     private void manageInternshipOpportunities() {
         System.out.println("\n--- Manage Internship Opportunities ---");
-        
-        //Get list of pending internship opportunities 
         List<InternshipOpportunity> pendingInternships = systemManager.getInternshipManager()
                 .getPendingInternships();
         
-        //Check if there any pending internships
         if (pendingInternships.isEmpty()) {
             System.out.println("No pending internship opportunities.");
             return;
         }
         
-        //Display all pending internships with details
         System.out.println("Pending internships:");
         for (int i = 0; i < pendingInternships.size(); i++) {
             InternshipOpportunity internship = pendingInternships.get(i);
@@ -185,14 +171,11 @@ public class CareerCenterStaffMenu extends BaseMenu {
                             internship.getCompanyName(), internship.getLevel(), internship.getTotalSlots());
         }
         
-        //Get user selection 
         int choice = getIntInput("Select internship to review (0 to cancel): ", 0, pendingInternships.size());
         if (choice == 0) return; //(0 to cancel)
         
-        //Get selected internship
         InternshipOpportunity selectedInternship = pendingInternships.get(choice - 1);
         
-        //Display complete internship details for review
         System.out.println("\n--- Internship Details ---");
         System.out.println("ID: " + selectedInternship.getInternshipID());
         System.out.println("Title: " + selectedInternship.getTitle());
@@ -204,14 +187,11 @@ public class CareerCenterStaffMenu extends BaseMenu {
         System.out.println("Total Slots: " + selectedInternship.getTotalSlots());
         System.out.println("Description: " + selectedInternship.getDescription());
         
-        //Display action options
         System.out.println("\n1. Approve");
         System.out.println("2. Reject");
         System.out.println("3. Cancel");
         
         int action = getIntInput("Enter your choice: ", 1, 3);
-        
-        //Handle approval/rejection
         switch (action) {
             case 1:
                 if (systemManager.getInternshipManager().approveInternship(selectedInternship.getInternshipID())) {
@@ -236,21 +216,18 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Manage withdrawal requests
+     * Displays pending withdrawal requests from students and allows
+     * the staff to approve or reject individual withdrawal requests.
      */
     private void manageWithdrawalRequests() {
         System.out.println("\n--- Manage Withdrawal Requests ---");
-        
-        //Get list of pending withdrawal requests
         List<Application> withdrawalRequests = systemManager.getApplicationManager().getWithdrawalRequests();
         
-        //Check if there are any pending requests
         if (withdrawalRequests.isEmpty()) {
             System.out.println("No pending withdrawal requests.");
             return;
         }
         
-        //Display all withdrawal requests with student and internship details
         System.out.println("Pending withdrawal requests:");
         for (int i = 0; i < withdrawalRequests.size(); i++) {
             Application app = withdrawalRequests.get(i);
@@ -264,16 +241,13 @@ public class CareerCenterStaffMenu extends BaseMenu {
             System.out.printf("    Application Status: %s\n", app.getStatus());
         }
         
-        //Get user selection 
         int choice = getIntInput("Select request to review (0 to cancel): ", 0, withdrawalRequests.size());
         if (choice == 0) return;
         
-        //Get selected application and related details
         Application selectedApp = withdrawalRequests.get(choice - 1);
         InternshipOpportunity internship = systemManager.getInternship(selectedApp.getInternshipID());
         User student = systemManager.getUser(selectedApp.getStudentID());
         
-        //Display detailed withdrawal request information
         System.out.println("\n--- Withdrawal Request Details ---");
         System.out.println("Student: " + (student != null ? student.getName() : "Unknown"));
         System.out.println("Internship: " + (internship != null ? internship.getTitle() : "Unknown"));
@@ -281,14 +255,12 @@ public class CareerCenterStaffMenu extends BaseMenu {
         System.out.println("Application Status: " + selectedApp.getStatus());
         System.out.println("Reason: " + selectedApp.getWithdrawalReason());
         
-        //Display action options
         System.out.println("\n1. Approve Withdrawal");
         System.out.println("2. Reject Withdrawal");
         System.out.println("3. Cancel");
         
         int action = getIntInput("Enter your choice: ", 1, 3);
         
-        //Handle approval/rejection of withdrawal
         switch (action) {
             case 1:
                 if (systemManager.getApplicationManager().approveWithdrawal(selectedApp.getApplicationID())) {
@@ -310,7 +282,8 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Displays report generation menu and allows staff to choose a report type.
+     * Displays the report generation menu and allows staff to select
+     * the type of report to generate.
      */
     private void generateReports() {
         System.out.println("\n--- Generate Reports ---");
@@ -321,7 +294,6 @@ public class CareerCenterStaffMenu extends BaseMenu {
         
         int choice = getIntInput("Enter your choice: ", 1, 4);
         
-        //Route to appropriate report generator
         switch (choice) {
             case 1:
                 generateInternshipStatisticsReport();
@@ -338,16 +310,15 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Generate internship statistics report
+     * Generates and displays internship statistics such as total, pending, 
+     * approved, rejected, and filled internships.
      */
     private void generateInternshipStatisticsReport() {
         System.out.println("\n--- Internship Statistics Report ---");
         
-        //Get statistics from internship manager
         Map<String, Integer> stats = systemManager.getInternshipManager().getInternshipStatistics();
         
         
-        //Display statistics 
         System.out.println("Total Internships: " + stats.get("Total"));
         System.out.println("Pending: " + stats.get("Pending"));
         System.out.println("Approved: " + stats.get("Approved"));
@@ -358,15 +329,14 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Generate application statistics report
+     * Generates and displays application statistics such as total, pending,
+     * successful, unsuccessful, withdrawn applications, and withdrawal requests.
      */
     private void generateApplicationStatisticsReport() {
         System.out.println("\n--- Application Statistics Report ---");
         
-        //Get statistic from application manager
         Map<String, Integer> stats = systemManager.getApplicationManager().getApplicationStatistics();
         
-        //Display statistic
         System.out.println("Total Applications: " + stats.get("Total"));
         System.out.println("Pending: " + stats.get("Pending"));
         System.out.println("Successful: " + stats.get("Successful"));
@@ -378,38 +348,31 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * Generate filtered internship report
+     * Allows filtering and displaying internships based on status, major, and level.
+     * Displays detailed information for each filtered internship.
      */
     private void generateFilteredInternshipReport() {
         System.out.println("\n--- Filtered Internship Report ---");
         
-        // Get filter criteria
         System.out.println("Filter options (press Enter to skip):");
         
-        //Filter by internship status
         System.out.print("Filter by Status (PENDING/APPROVED/REJECTED/FILLED or Enter for all): ");
         String statusFilter = scanner.nextLine().trim();
         InternshipStatus status = statusFilter.isEmpty() ? null : InternshipStatus.fromString(statusFilter);
         
-        //Filter by major
         System.out.print("Filter by Major (or Enter for all): ");
         String majorFilter = scanner.nextLine().trim();
         Major major = majorFilter.isEmpty() ? null : Major.fromString(majorFilter);
         
-        //Filter by internship level
         System.out.print("Filter by Level (BASIC/INTERMEDIATE/ADVANCED or Enter for all): ");
         String levelFilter = scanner.nextLine().trim();
         InternshipLevel level = levelFilter.isEmpty() ? null : InternshipLevel.fromString(levelFilter);
-        
-        //Get filtered internship list
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
                 .getAllInternships(status, major, level);
         
-        //Display result header
         System.out.println("\nFound " + internships.size() + " internship(s):");
         System.out.println("=" + "=".repeat(120));
         
-        //Display each internship with detailed information
         for (InternshipOpportunity internship : internships) {
             System.out.printf("ID: %s | Title: %s\n", internship.getInternshipID(), internship.getTitle());
             System.out.printf("Company: %s | Level: %s | Major: %s\n",
@@ -427,12 +390,11 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * View system statistics
+     * Displays system statistics including number of students, company representatives,
+     * approved and pending representatives, career center staff, internships, and applications.
      */
     private void viewSystemStatistics() {
         System.out.println("\n--- System Statistics ---");
-        
-        // Display user statistics
         System.out.println("=== User Statistics ===");
         List<Student> students = systemManager.getUserManager().getAllStudents();
         List<CompanyRepresentative> reps = systemManager.getUserManager().getAllCompanyRepresentatives();
@@ -445,13 +407,12 @@ public class CareerCenterStaffMenu extends BaseMenu {
         System.out.println("Pending Company Representatives: " + 
                          systemManager.getUserManager().getPendingApprovals().size());
         System.out.println("Total Career Center Staff: " + staff.size());
-        
-        //Get and display internship statistics
+
         System.out.println("\n=== Internship Statistics ===");
         Map<String, Integer> internshipStats = systemManager.getInternshipManager().getInternshipStatistics();
         internshipStats.forEach((key, value) -> System.out.println(key + ": " + value));
         
-        //Get and display application statistics
+
         System.out.println("\n=== Application Statistics ===");
         Map<String, Integer> applicationStats = systemManager.getApplicationManager().getApplicationStatistics();
         applicationStats.forEach((key, value) -> System.out.println(key + ": " + value));
@@ -460,26 +421,23 @@ public class CareerCenterStaffMenu extends BaseMenu {
     }
     
     /**
-     * View a list of all internships
+     * Displays a complete list of all internships in the system, along with
+     * their details including company, level, status, major, slots, visibility, and dates.
      */
     private void viewAllInternships() {
         System.out.println("\n--- All Internships ---");
-        
-        //Get all internships 
+         
         List<InternshipOpportunity> internships = systemManager.getInternshipManager()
                 .getAllInternships(null, null, null); // no filtering
         
-        //Check if any internships exist
         if (internships.isEmpty()) {
             System.out.println("No internships found.");
             return;
         }
         
-        //Display result header
         System.out.println("Found " + internships.size() + " internship(s):");
         System.out.println("=" + "=".repeat(120));
         
-        //Display each internship with details
         for (InternshipOpportunity internship : internships) {
             System.out.printf("ID: %s | Title: %s\n", internship.getInternshipID(), internship.getTitle());
             System.out.printf("Company: %s | Level: %s | Status: %s\n",
