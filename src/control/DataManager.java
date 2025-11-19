@@ -395,6 +395,8 @@ public class DataManager {
 
             Application application = new Application(applicationID, studentID, internshipID);
             application.setStatus(status);
+            application.setApplicationDate(applicationDate);
+            application.setStatusUpdateDate(statusUpdateDate);
 
             // Load withdrawal information if present
             if (parts.length > 6 && !parts[6].isEmpty()) {

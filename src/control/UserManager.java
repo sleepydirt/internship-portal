@@ -205,8 +205,8 @@ public class UserManager {
      */
     public void createDefaultUsers() {
         // Create default students
-        Student student1 = new Student("U1234567A", "John Doe", "password", 3, Major.CSC);
-        Student student2 = new Student("U2345678B", "Jane Smith", "password", 2, Major.EEE);
+        Student student1 = new Student("U2310001A", "Tan Wei Ling", "password", 2, Major.CSC);
+        Student student2 = new Student("U2345678B", "Jane Smith", "password", 3, Major.EEE);
         Student student3 = new Student("U3456789C", "Bob Johnson", "password", 4, Major.MAE);
 
         userRepository.add(student1);
@@ -223,8 +223,8 @@ public class UserManager {
         userRepository.add(staff2);
 
         // Create default company representative (pre-approved for testing)
-        CompanyRepresentative rep1 = new CompanyRepresentative("hr@techcorp.com", "Alice Wilson", "password",
-                "TechCorp Pte Ltd", "Human Resources", "HR Manager");
+        CompanyRepresentative rep1 = new CompanyRepresentative("hr@openai.com", "John Pork", "password",
+                "OpenAIx", "Human Resources", "HR Manager");
         rep1.setApproved(true);
         userRepository.add(rep1);
 

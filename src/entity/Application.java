@@ -108,11 +108,29 @@ public class Application {
     public LocalDateTime getApplicationDate() { return applicationDate; }
     
     /**
+     * Sets the application date
+     * Used by DataManager when loading applications from file to restore original timestamps
+     * @param applicationDate the application submission date and time
+     */
+    public void setApplicationDate(LocalDateTime applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+    
+    /**
      * Gets the date and time of the last status update
      * Updated automatically when status changes
      * @return the status update date and time
      */
     public LocalDateTime getStatusUpdateDate() { return statusUpdateDate; }
+    
+    /**
+     * Sets the status update date
+     * Used by DataManager when loading applications from file to restore original timestamps
+     * @param statusUpdateDate the status update date and time
+     */
+    public void setStatusUpdateDate(LocalDateTime statusUpdateDate) {
+        this.statusUpdateDate = statusUpdateDate;
+    }
     
     /**
      * Gets the reason provided for withdrawal request
