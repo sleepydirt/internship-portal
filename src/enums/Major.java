@@ -27,12 +27,6 @@ public enum Major {
     /** Chemical & Biomolecular Engineering */
     CBE("Chemical & Biomolecular Engineering"),
     
-    /** School of Computer Science & Engineering */
-    SCSE("School of Computer Science & Engineering"),
-    
-    /** Electrical & Electronic Engineering / Computer Science (Double Degree) */
-    EEE_SCSE("Electrical & Electronic Engineering / Computer Science"),
-    
     /** Other majors - acts as wildcard for internships open to all majors */
     OTHER("Other");
     
