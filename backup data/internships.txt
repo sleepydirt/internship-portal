@@ -1,0 +1,10 @@
+INT000010|PEK LAO ZAI|be a pek lao zai in an fu|BASIC|CSC|2025-11-11|2025-12-12|REJECTED|An Fu|anfu@gmail.com|1|0|false|
+INT000009|Quality Assurance|QA|BASIC|CSC|2025-11-01|2025-12-12|FILLED|an fu supply|anfusupply@gmail.com|2|2|true|
+INT000007|FULL STACK ENGINEERING|full|ADVANCED|CSC|2025-11-01|2025-12-12|APPROVED|an fu supply|anfusupply@gmail.com|10|0|true|
+INT000008|Product Manager|PM|ADVANCED|CSC|2025-11-01|2025-12-12|APPROVED|an fu supply|anfusupply@gmail.com|10|0|true|
+INT000005|Backend Engineering|backend|INTERMEDIATE|EEE_SCSE|2025-11-01|2025-12-12|APPROVED|an fu supply|anfusupply@gmail.com|10|0|true|
+INT000006|Frontend Engineer|frontend|ADVANCED|CSC|2025-11-01|2025-12-12|APPROVED|an fu supply|anfusupply@gmail.com|10|0|true|
+INT000003|AI Engineering|ai etc|BASIC|CSC|2025-11-01|2025-12-12|APPROVED|An Fu|anfu@gmail.com|10|0|true|
+INT000004|Data Analytics|analysing website traffic data|BASIC|CSC|2025-11-01|2025-12-12|APPROVED|An Fu|anfu@gmail.com|10|0|true|
+INT000001|Embalmer|embalm body|BASIC|CSC|2025-11-01|2025-12-12|APPROVED|An Fu|anfu@gmail.com|10|0|true|
+INT000002|Software Engineering|developing company website|BASIC|CSC|2025-11-01|2025-12-12|APPROVED|An Fu|anfu@gmail.com|10|0|true|

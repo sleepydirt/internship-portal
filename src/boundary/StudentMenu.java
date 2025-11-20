@@ -1,10 +1,10 @@
 package boundary;
 
-import java.util.List;
-import control.SystemManager;
 import control.InternshipFilterSettings;
+import control.SystemManager;
 import entity.*;
 import enums.*;
+import java.util.List;
 
 /**
  * Student Menu - Interface for student users

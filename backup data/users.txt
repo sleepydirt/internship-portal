@@ -1,0 +1,11 @@
+STUDENT|U1234567C|Year 3 John Doe|passwordchanged|3|CSC|INT000009|INT000009
+STUDENT|U1234567D|Year 4 John Doe|passwordchanged|4|CSC|INT000009|INT000009
+STUDENT|U2345678B|Jane Smith|password|2|EEE||
+CAREER_CENTER_STAFF|staff01@ntu.edu.sg|Admin User|passwordchanged|Career Services
+CAREER_CENTER_STAFF|staff02@ntu.edu.sg|Manager User|password|Student Affairs
+STUDENT|U1234567A|Year 1 John Doe|passwordchanged|1|CSC||
+STUDENT|U1234567B|Year 2 John Doe|passwordchanged|2|CSC|INT000003,INT000004|
+COMPANY_REPRESENTATIVE|anfu@gmail.com|Keith Mui|passwordchanged|An Fu|HR|HR manager|true|INT000001,INT000002,INT000003,INT000004,INT000010
+COMPANY_REPRESENTATIVE|anfusupply@gmail.com|Keith Tan|password|an fu supply|management|director|true|INT000005,INT000006,INT000007,INT000008,INT000009
+STUDENT|U3456789C|Bob Johnson|password|4|MAE||
+COMPANY_REPRESENTATIVE|hr@techcorp.com|Alice Wilson|password|TechCorp Pte Ltd|Human Resources|HR Manager|true|
