@@ -1,8 +1,5 @@
-STUDENT|U1234567C|Year 3 John Doe|passwordchanged|3|CSC||
-COMPANY_REPRESENTATIVE|nusnursing@gmail.com|Celeste Tan|passwordchanged|Abusing NUS nursing|Abused Department|toilet dump|true|INT000001
-STUDENT|U1234567D|Year 4 John Doe|passwordchanged|4|CSC||
-CAREER_CENTER_STAFF|staff01@ntu.edu.sg|Admin User|passwordchanged|Career Services
-CAREER_CENTER_STAFF|staff02@ntu.edu.sg|Manager User|password|Student Affairs
-STUDENT|U1234567A|Year 1 John Doe|passwordchanged|1|CSC|INT000001|INT000001
-STUDENT|U1234567B|Year 2 John Doe|passwordchanged|2|CSC|INT000001|INT000001
-COMPANY_REPRESENTATIVE|anfu@gmail.com|Keith Mui|passwordchanged|An Fu|Human Resources|HR manager|true|
+STUDENT|U1234567C|Year 3 John Doe|password|3|CSC||
+STUDENT|U1234567D|Year 4 John Doe|password|4|CSC||
+CAREER_CENTER_STAFF|staff@ntu.edu.sg|Admin User|password|Career Services
+STUDENT|U1234567A|Year 1 John Doe|password|1|CSC||
+STUDENT|U1234567B|Year 2 John Doe|password|2|CSC||

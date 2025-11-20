@@ -1,0 +1,39 @@
+Test Case,Expected Behaviour,Failure Indicators,Pass/Fail
+Company rep registers,Company representative registration request is created and pending career staff approval,Registration not saved or not visible in career staff approval queue,Pass
+Career staff logs in,Career staff can log in using auto-registered credentials from txt file,Login fails or txt auto-registration missing,Pass
+Career staff approves company rep,Option 1 displays pending reps and approval marks rep as approved,Rep still cannot log in or approval not reflected,Pass
+Career staff logs out,Career staff session ends and returns to main menu,Still logged in or cannot return to login screen,Pass
+Company rep logs in with password created,Company rep can log in using password created (password123),Login denied or wrong default password,Pass
+Company rep changes default password,password123 successfully updates to password,Old password still works or update not saved,Pass
+Company rep creates internship opportunity,Internship entered and marked as pending career staff approval,Internship not saved or missing in approval list,Pass
+Company rep logs out,Session ends and returns to main menu,Session persists or cannot navigate back,Pass
+Career staff logs in (again),Career staff login successful,Login fails,Pass
+Career staff selects option 2 (internship opportunity),Pending internship opportunities are displayed,Pending internships missing,Pass
+Career staff approves internship,Internship becomes active and visible to students,Internship remains pending or does not appear to students,Pass
+Career staff logs out,Session ends normally,Logout malfunction,Pass
+Student logs in with default password,"Student auto-registered with default password, ""password""",Cannot log in or student not auto-registered,Pass
+Student changes default password,"Password updates correctly to ""password1""",Old password works or update not saved,Pass
+Student selects option 1 (view internships),Student sees only internships matching profile,Internships missing or incorrect matches,Pass
+Student applies filters,Filtered internship list displayed correctly,Filters return incorrect or no results,Pass
+Student applies for internship (3 applications),System accepts up to 3 active applications pending company approval,More than 3 allowed or applications not submitted,Pass
+Student requests withdrawal for one application,Withdrawal request appears in career staff queue,Request not created or not visible to staff,Pass
+Student logs out,Session ends normally,Logout fails,Pass
+Career staff logs in (again),Career staff login successful,Login blocked,Pass
+Career staff selects option 6 (view internships),All internships displayed with functioning filter options,Internships missing or filters faulty,Pass
+Career staff selects option 3 (manage withdrawal requests),Pending withdrawal request shown,Request missing,Pass
+Career staff approves withdrawal,Application removed and student updated with withdrawn status,Status unchanged or still appears active,Pass
+Career staff logs out,Session ends normally,Logout fails,Pass
+Company rep logs in,Rep login successful,Login fails,Pass
+Company rep selects option 2 (view my internships),Rep sees only their own internships and filters work,Internships missing or incorrect,Pass
+Company rep selects option 6 (manage applications),Pending student applications are displayed,Applications missing,Pass
+Company rep approves application,Application status updated to “Approved by Company”,Status unchanged or error thrown,Pass
+Company rep logs out,Session ends normally,Logout fail,Pass
+Student logs in checks option 3,Student sees updated application statuses,Statuses unchanged or missing,Pass
+Student accepts internship placement,Student selects one successful application; system auto-withdraws other applications,Other applications not auto-withdrawn,Pass
+Student requests withdrawal after accepting,Withdrawal request created and pending staff approval,Request missing or blocked incorrectly,Pass
+Student logs out,Session ends normally,Logout fails,Pass
+Career staff logs in (again),Login successful,Failure to log in,Pass
+Career staff approves withdrawal request,Internship placement removed and student eligible to apply again,Status not updated,Pass
+Career staff logs out,Logout successful,Logout failure,Pass
+Student logs in and checks status,Student sees updated status and allowed to apply again,Status unchanged or blocked,Pass
+Student applies for internship again,System allows new applications,Unable to apply again,Pass
