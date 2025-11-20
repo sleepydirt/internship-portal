@@ -1,8 +1,0 @@
-1. is there a pre determine major for enum ? some enum is mixed and how do the student supposed to view the internships opportunity that is mixed? (doesnt seems to be working if it supposed to be showing )
-2. year 3 student, computer science cannot apply to basic, intermediate , advanced internships, can view only own major internships 
-3. filter when appearing for internships, we already filtered by major and Year of study(for level of internship) do we need to filter again by major, level of internship?
-4. applications number did not go up. 
-5. user id is case senstiive (?)
-6. accepted internship unclear on student side
-7. how do i use the filter is it possible for the user to just choose a list of options of course instead? 
-8. implement filter to point 6 of career staff ? point 2 of employer ? saving of filter function ?
