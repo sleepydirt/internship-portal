@@ -3,3 +3,4 @@ STUDENT|U1234567D|Year 4 John Doe|password|4|CSC||
 CAREER_CENTER_STAFF|staff@ntu.edu.sg|Admin User|password|Career Services
 STUDENT|U1234567A|Year 1 John Doe|password|1|CSC||
 STUDENT|U1234567B|Year 2 John Doe|password|2|CSC||
+COMPANY_REPRESENTATIVE|dummy@gmail.com|dummy leong|password|dummy company|dummy depart|dummy position|true|INT000001,INT000002,INT000003

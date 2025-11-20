@@ -12,7 +12,7 @@ Career staff selects option 2 (internship opportunity),Pending internship opport
 Career staff approves internship,Internship becomes active and visible to students,Internship remains pending or does not appear to students,Pass
 Career staff logs out,Session ends normally,Logout malfunction,Pass
 Student logs in with default password,"Student auto-registered with default password, ""password""",Cannot log in or student not auto-registered,Pass
-Student changes default password,"Password updates correctly to ""password1""",Old password works or update not saved,Pass
+Student changes default password,"Password updates correctly to "password1"",Old password works or update not saved,Pass
 Student selects option 1 (view internships),Student sees only internships matching profile,Internships missing or incorrect matches,Pass
 Student applies filters,Filtered internship list displayed correctly,Filters return incorrect or no results,Pass
 Student applies for internship (3 applications),System accepts up to 3 active applications pending company approval,More than 3 allowed or applications not submitted,Pass
@@ -26,7 +26,7 @@ Career staff logs out,Session ends normally,Logout fails,Pass
 Company rep logs in,Rep login successful,Login fails,Pass
 Company rep selects option 2 (view my internships),Rep sees only their own internships and filters work,Internships missing or incorrect,Pass
 Company rep selects option 6 (manage applications),Pending student applications are displayed,Applications missing,Pass
-Company rep approves application,Application status updated to “Approved by Company”,Status unchanged or error thrown,Pass
+Company rep approves application,Application status updated to "Approved by Company",Status unchanged or error thrown,Pass
 Company rep logs out,Session ends normally,Logout fail,Pass
 Student logs in checks option 3,Student sees updated application statuses,Statuses unchanged or missing,Pass
 Student accepts internship placement,Student selects one successful application; system auto-withdraws other applications,Other applications not auto-withdrawn,Pass
