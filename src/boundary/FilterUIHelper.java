@@ -1,11 +1,11 @@
 package boundary;
 
+import control.InternshipFilterSettings;
+import enums.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import control.InternshipFilterSettings;
-import enums.*;
 
 /**
  * Filter UI Helper - Provides common filter input methods
@@ -210,7 +210,7 @@ public class FilterUIHelper {
         promptClosingDateFilter(filterSettings);
         promptSlotsFilter(filterSettings);
         
-        System.out.println("\n✓ Filters configured!");
+        System.out.println("\nFilters configured!");
     }
     
     /**
@@ -228,7 +228,7 @@ public class FilterUIHelper {
         promptClosingDateFilter(filterSettings);
         promptSlotsFilter(filterSettings);
         
-        System.out.println("\n✓ Filters configured!");
+        System.out.println("\nFilters configured!");
     }
     
     /**
