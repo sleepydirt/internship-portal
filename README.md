@@ -58,7 +58,16 @@ The application follows Object-Oriented Design principles with clear separation 
 ### Prerequisites
 
 - Java Development Kit (JDK) 11 or higher
-- Any Java IDE (IntelliJ IDEA, Eclipse, NetBeans) or text editor
+- Any Java IDE or text editor
+
+### Project Structure
+
+> [!NOTE]  
+> All source code is located in the `src/` directory.
+> Test cases can be found in the `testcase/` directory.
+> All sequence and class diagrams can be found in the `diagrams/` directory.
+> The generated javadoc can be found in the `docs/` directory.
+> All `.class` files will be complied to the `build/` folder.
 
 ### Running the Application
 
