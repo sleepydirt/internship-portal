@@ -11,12 +11,11 @@ import enums.*;
  * <p>
  * Responsibilities:
  * <ul>
- *     <li>Create, update, and delete internships</li>
- *     <li>Approve or reject internships for visibility to students</li>
- *     <li>Filter internships for students or career center staff</li>
- *     <li>Provide internship statistics</li>
+ * <li>Create, update, and delete internships</li>
+ * <li>Approve or reject internships for visibility to students</li>
+ * <li>Filter internships for students or career center staff</li>
+ * <li>Provide internship statistics</li>
  * </ul>
- * </p>
  * 
  * @author SC2002 Group
  * @version 1.0
@@ -116,12 +115,12 @@ public class InternshipManager {
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
     }
-    
+
     /**
      * Get internships visible to students with comprehensive filter settings
      * Students can see internships they applied for even if visibility is off
      * 
-     * @param student student viewing the internships
+     * @param student        student viewing the internships
      * @param filterSettings filter settings to apply
      * @return filtered list of internships
      */
@@ -129,13 +128,13 @@ public class InternshipManager {
             InternshipFilterSettings filterSettings) {
         return internshipRepository.getAll().values().stream()
                 // Students can see: visible internships OR internships they've applied to
-                .filter(internship -> internship.isVisible() || 
-                                     student.getAppliedInternships().contains(internship.getInternshipID()))
+                .filter(internship -> internship.isVisible() ||
+                        student.getAppliedInternships().contains(internship.getInternshipID()))
                 .filter(internship -> internship.getStatus() == InternshipStatus.APPROVED)
                 .filter(internship -> internship.isStudentEligible(student))
                 .filter(internship -> applyFilterSettings(internship, filterSettings))
-                .filter(internship -> !filterSettings.isShowOnlyApplied() || 
-                                     student.getAppliedInternships().contains(internship.getInternshipID()))
+                .filter(internship -> !filterSettings.isShowOnlyApplied() ||
+                        student.getAppliedInternships().contains(internship.getInternshipID()))
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
     }
@@ -158,9 +157,10 @@ public class InternshipManager {
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
     }
-    
+
     /**
-     * Get all internships for career center staff with comprehensive filter settings
+     * Get all internships for career center staff with comprehensive filter
+     * settings
      * 
      * @param filterSettings filter settings to apply
      * @return filtered list of internships
@@ -171,12 +171,12 @@ public class InternshipManager {
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
     }
-    
+
     /**
      * Get internships created by a company representative with filter settings
      * 
      * @param representativeID representative ID
-     * @param filterSettings filter settings to apply
+     * @param filterSettings   filter settings to apply
      * @return filtered list of internships
      */
     public List<InternshipOpportunity> getInternshipsByRepresentativeWithFilters(String representativeID,
@@ -187,46 +187,46 @@ public class InternshipManager {
                 .sorted(Comparator.comparing(InternshipOpportunity::getTitle))
                 .collect(Collectors.toList());
     }
-    
+
     /**
      * Helper method to apply filter settings to an internship
      * Centralises the filter logic to avoid duplication
      * 
-     * @param internship internship to check
+     * @param internship     internship to check
      * @param filterSettings filter settings to apply
      * @return true if internship passes all filters
      */
     private boolean applyFilterSettings(InternshipOpportunity internship, InternshipFilterSettings filterSettings) {
-        if (filterSettings.getStatusFilter() != null && 
-            internship.getStatus() != filterSettings.getStatusFilter()) {
+        if (filterSettings.getStatusFilter() != null &&
+                internship.getStatus() != filterSettings.getStatusFilter()) {
             return false;
         }
-        
-        if (filterSettings.getMajorFilter() != null && 
-            internship.getPreferredMajor() != filterSettings.getMajorFilter()) {
+
+        if (filterSettings.getMajorFilter() != null &&
+                internship.getPreferredMajor() != filterSettings.getMajorFilter()) {
             return false;
         }
-        
-        if (filterSettings.getLevelFilter() != null && 
-            internship.getLevel() != filterSettings.getLevelFilter()) {
+
+        if (filterSettings.getLevelFilter() != null &&
+                internship.getLevel() != filterSettings.getLevelFilter()) {
             return false;
         }
-        
-        if (filterSettings.getClosingDateFrom() != null && 
-            internship.getClosingDate().isBefore(filterSettings.getClosingDateFrom())) {
+
+        if (filterSettings.getClosingDateFrom() != null &&
+                internship.getClosingDate().isBefore(filterSettings.getClosingDateFrom())) {
             return false;
         }
-        
-        if (filterSettings.getClosingDateTo() != null && 
-            internship.getClosingDate().isAfter(filterSettings.getClosingDateTo())) {
+
+        if (filterSettings.getClosingDateTo() != null &&
+                internship.getClosingDate().isAfter(filterSettings.getClosingDateTo())) {
             return false;
         }
-        
-        if (filterSettings.getMinAvailableSlots() != null && 
-            internship.getAvailableSlots() < filterSettings.getMinAvailableSlots()) {
+
+        if (filterSettings.getMinAvailableSlots() != null &&
+                internship.getAvailableSlots() < filterSettings.getMinAvailableSlots()) {
             return false;
         }
-        
+
         return true;
     }
 

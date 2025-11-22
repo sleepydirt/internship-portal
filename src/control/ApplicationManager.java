@@ -45,7 +45,6 @@ public class ApplicationManager {
      *     <li>Internship availability</li>
      *     <li>Duplicate applications</li>
      * </ul>
-     * </p>
      * 
      * @param studentID student ID
      * @param internshipID internship ID
