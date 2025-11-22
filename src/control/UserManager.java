@@ -205,8 +205,8 @@ public class UserManager {
      */
     public void createDefaultUsers() {
         // Create default students
-        Student student1 = new Student("U2310001A", "Tan Wei Ling", "password", 2, Major.CSC);
-        Student student2 = new Student("U2345678B", "Jane Smith", "password", 3, Major.EEE);
+        Student student1 = new Student("U1234567A", "Tan Wei Ling", "password", 3, Major.CSC);
+        Student student2 = new Student("U2345678B", "Jane Smith", "password", 2, Major.EEE);
         Student student3 = new Student("U3456789C", "Bob Johnson", "password", 4, Major.MAE);
 
         userRepository.add(student1);

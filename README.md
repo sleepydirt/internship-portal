@@ -104,7 +104,7 @@ The system comes with pre-configured default users for testing:
 
 **Company Representative (Pre-approved):**
 
-- ID: hr@techcorp.com, Password: password
+- ID: hr@openai.com, Password: password
 
 ## Business Rules
 
@@ -135,61 +135,20 @@ The system comes with pre-configured default users for testing:
 
 ## Data Persistence
 
-The system uses file-based data persistence. The data folder contains sample CSV files for initial system setup:
-
-- `data/sample_student_list.csv` - Sample student data with StudentID, Name, Major, Year, and Email
-- `data/sample_staff_list.csv` - Sample career center staff data with StaffID, Name, Role, Department, and Email
-- `data/sample_company_representative_list.csv` - Sample company representative data with CompanyRepID, Name, CompanyName, Department, Position, Email, and Status
+The system uses file-based data persistence. These are stored in `.txt` files located in the `data/` directory. It is strongly recommended that you do not manually modify these files.
 
 Data is automatically loaded on startup and saved on shutdown.
 
 ## Testing
 
-The system includes comprehensive validation for:
+Please refer to the `testcase/` directory for a comprehensive outline on testing.
 
-- User authentication and authorization
-- Business rule enforcement
-- Input validation and error handling
-- Data consistency and integrity
+## Documentation
 
-Test the application using the default users and follow the workflow scenarios provided in the assignment requirements.
+Please refer to the Javadoc generated in the `docs/` directory. You can view the generated documentation by opening the `index.html` file.
 
-## Future Enhancements
+To manually regenerate the Javadoc, run the command:
 
-- GUI implementation using JavaFX or Swing
-- Database integration for improved data management
-- Email notification system
-- Advanced reporting with charts and graphs
-- Mobile application interface
-- Integration with external job portals
-
-## Project Structure
-
-```
-src/
-├── Main.java
-├── boundary/
-│   ├── BaseMenu.java
-│   ├── CareerCenterStaffMenu.java
-│   ├── CompanyRepresentativeMenu.java
-│   ├── MainMenu.java
-│   └── StudentMenu.java
-├── control/
-│   ├── ApplicationManager.java
-│   ├── DataManager.java
-│   ├── InternshipManager.java
-│   ├── SystemManager.java
-│   └── UserManager.java
-├── entity/
-│   ├── Application.java
-│   ├── CareerCenterStaff.java
-│   ├── CompanyRepresentative.java
-│   ├── InternshipOpportunity.java
-│   ├── Student.java
-│   └── User.java
-└── enums/
-    ├── ApplicationStatus.java
-    ├── InternshipLevel.java
-    ├── InternshipStatus.java
-    └── Major.java
+```bash
+javadoc -d docs -sourcepath src -subpackages boundary:control:entity:enums -classpath src src/Main.java
 ```
